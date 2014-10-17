@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
+# {{{
+# vim: foldmethod=marker
+# vim: foldcolumn=4
+# }}}
 
+export PATH=/sbin:$PATH
+
+# bash-it {{{
 # Load RVM, if you are using it
 [[ -s $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm
 
@@ -39,6 +46,8 @@ export TODO="t"
 # Set vcprompt executable path for scm advance info in prompt (demula theme)
 # https://github.com/xvzf/vcprompt
 #export VCPROMPT_EXECUTABLE=~/.vcprompt/bin/vcprompt
+
+#}}}
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -86,3 +95,4 @@ if [ -r $HOME/.homesick ]; then
     source "$HOME/.homesick/repos/homeshick/homeshick.sh"
     source "$HOME/.homesick/repos/homeshick/completions/homeshick-completion.bash"
 fi
+
