@@ -4,7 +4,7 @@
 # vim: foldcolumn=4
 # }}}
 
-export PATH=/sbin:$PATH
+export PATH=/sbin:/usr/sbin:$PATH
 
 # bash-it {{{
 # Load RVM, if you are using it
