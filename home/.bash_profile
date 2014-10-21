@@ -5,6 +5,7 @@
 # }}}
 
 export PATH=/sbin:/usr/sbin:$PATH
+export EDITOR=/usr/bin/vim
 
 # bash-it {{{
 # Load RVM, if you are using it
