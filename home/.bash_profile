@@ -96,3 +96,5 @@ if [ -r $HOME/.homesick ]; then
     source "$HOME/.homesick/repos/homeshick/completions/homeshick-completion.bash"
 fi
 
+stty stop undef
+stty start undef
