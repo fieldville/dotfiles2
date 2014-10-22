@@ -47,7 +47,3 @@ if [ -f ~/.alias.private ]; then
 fi
 
 set -o vi
-
-stty stop undef
-stty start undef
-
