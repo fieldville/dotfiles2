@@ -4,9 +4,6 @@
 # vim: foldcolumn=4
 # }}}
 
-export PATH=/sbin:/usr/sbin:$PATH
-export EDITOR=/usr/bin/vim
-
 # bash-it {{{
 # Load RVM, if you are using it
 [[ -s $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm
@@ -62,34 +59,9 @@ if [ -x /usr/bin/dircolors ]; then
     #alias egrep='egrep --color=auto'
 fi
 
-# some more ls aliases
-alias ll='ls -ltr'
-alias la='ll -A'
-alias l='ls -CF'
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-if [ -f ~/.alias ]; then
-    . ~/.alias
-fi
-if [ -f ~/.alias.private ]; then
-    . ~/.alias.private
-fi
-
 # Load Bash It
 if [ -r $BASH_IT ]; then
     source $BASH_IT/bash_it.sh
-fi
-
-alias gd='git diff'
-
-set -o vi
-
-# 256-color mode not supported on this host
-if ! infocmp screen-256color >/dev/null 2>&1 && echo $TERM | grep -q -- '-256color'; then
-    echo -e '\n\n256-color mode not supported on this host.  Reverting TERM...\n'
-    export TERM=`echo -n $TERM | sed 's/-256color//'`
 fi
 
 if [ -r $HOME/.homesick ]; then
@@ -97,5 +69,36 @@ if [ -r $HOME/.homesick ]; then
     source "$HOME/.homesick/repos/homeshick/completions/homeshick-completion.bash"
 fi
 
-stty stop undef
-stty start undef
+# 256-color mode not supported on this host
+if ! infocmp screen-256color >/dev/null 2>&1 && echo $TERM | grep -q -- '-256color'; then
+    echo -e '\n\n256-color mode not supported on this host.  Reverting TERM...\n'
+    export TERM=`echo -n $TERM | sed 's/-256color//'`
+else
+    # Colorize the prompt.
+    yellow=$(tput setaf 3)
+    green=$(tput setaf 2)
+    blue=$(tput setaf 104)
+    bold=$(tput bold)
+    reset=$(tput sgr0)
+
+    PS1="\[$yellow\]\u\[$reset\]@\[$green\]\h\[$reset\]:\[$blue$bold\]\w\[$reset\]$ "
+
+    # Enable color support of ls and also add handy aliases.
+    export CLICOLOR=1
+    export LSCOLORS=ExFxCxDxBxegedabagacad
+    if [ -x /usr/bin/dircolors ]; then
+        test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+        alias ls='ls --color=auto'
+        alias grep='grep --color=auto'
+        alias fgrep='fgrep --color=auto'
+        alias egrep='egrep --color=auto'
+    fi
+fi
+
+# if running bash
+if [ -n "$BASH_VERSION" ]; then
+    # include .bashrc if it exists
+    if [ -f "$HOME/.bashrc" ]; then
+        . "$HOME/.bashrc"
+    fi
+fi
