@@ -679,5 +679,36 @@ au FileType mkd call ChangeFileTypeToMarkDown('markdown')
 "set noundofile
 "}}}
 
+" yanktmp.vim {{{
+if v:version < 700 || (exists('g:loaded_yanktmp') && g:loaded_yanktmp || &cp)
+  finish
+endif
+let g:loaded_yanktmp = 1
+
+if !exists('g:yanktmp_file')
+  let g:yanktmp_file = '/tmp/vimyanktmp'
+endif
+
+function! YanktmpYank() range
+  call writefile(getline(a:firstline, a:lastline), g:yanktmp_file, 'b')
+endfunction
+
+function! YanktmpPaste_p() range
+  let pos = getpos('.')
+  call append(a:firstline, readfile(g:yanktmp_file, "b"))
+  call setpos('.', [0, pos[1] + 1, 1, 0])
+endfunction
+
+function! YanktmpPaste_P() range
+  let pos = getpos('.')
+  call append(a:firstline - 1, readfile(g:yanktmp_file, "b"))
+  call setpos('.', [0, pos[1], 1, 0])
+endfunction
+
+map <silent> sy :call YanktmpYank()<CR>
+map <silent> sp :call YanktmpPaste_p()<CR>
+map <silent> sP :call YanktmpPaste_P()<CR>
+" }}}
+
 " vim: foldmethod=marker
 " vim: foldcolumn=3
