@@ -34,6 +34,7 @@ export PATH=/sbin:/usr/sbin:$PATH
 alias ll='ls -ltrh'
 alias la='ll -A'
 alias l='ls -CF'
+alias df='df -hT'
 alias gd='git diff'
 
 if [ -f ~/.bash_aliases ]; then
