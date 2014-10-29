@@ -31,7 +31,7 @@ export PATH=/usr/local/bin:$PATH
 export PATH=/sbin:/usr/sbin:$PATH
 
 # some more ls aliases
-alias ll='ls -ltr'
+alias ll='ls -ltrh'
 alias la='ll -A'
 alias l='ls -CF'
 alias gd='git diff'
