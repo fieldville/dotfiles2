@@ -67,7 +67,7 @@ endif " has("autocmd")
 set nobackup
 " 初回のみ読み込まれるデフォルト定義 {{{
 if has('vim_starting')
-  set tabstop=4
+  set tabstop=8
   set softtabstop=4
   set shiftwidth=4
   set noautoindent
