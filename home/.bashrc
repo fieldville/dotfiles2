@@ -1,12 +1,15 @@
 # Don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options.
-export HISTCONTROL=ignoreboth
+export HISTCONTROL=ignoredups:erasedups
 
 # Append to the history file, don't overwrite it.
 shopt -s histappend
 
-# History size up to 1000 commands.
-export HISTSIZE=1000
+export PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
+
+# History size up
+export HISTSIZE=100000
+export HISTFILESIZE=100000
 
 # Make less more friendly for non-text input files, see lesspipe(1).
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -36,6 +39,7 @@ alias la='ll -A'
 alias l='ls -CF'
 alias df='df -Tmh'
 alias gd='git diff'
+alias h='history'
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
