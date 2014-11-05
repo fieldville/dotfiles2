@@ -37,7 +37,7 @@ export PATH=/sbin:/usr/sbin:$PATH
 alias ll='ls -ltrh'
 alias la='ll -A'
 alias l='ls -CF'
-alias df='df -Tmh'
+alias df='df -Th'
 alias gd='git diff'
 alias h='history'
 
