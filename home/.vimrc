@@ -270,7 +270,7 @@ augroup END
 
 " for grep {{{
 "{{{ 外部grep
-let &grepprg="find . -type f -name '*.*'
+let &grepprg="find . -type f -name '*'
               \ -a -not -regex '.*\\.swp$'
               \ -a -not -regex '.*\\.gz$'
               \ -a -not -regex '.*\\.gif$'
