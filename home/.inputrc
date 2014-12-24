@@ -31,3 +31,7 @@ Control-l: clear-screen
 Control-k: menu-complete
 # cycle backward
 Control-j: menu-complete-backward
+
+set bind-tty-special-chars off
+Control-u: kill-whole-line
+Control-w: backward-kill-word
