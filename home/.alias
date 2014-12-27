@@ -46,3 +46,7 @@ alias gta="git tag -a"
 alias gtd="git tag -d"
 alias gtl="git tag -l"
 alias gd='git diff'
+
+# also load inputrc
+DIR=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
+bind -f $DIR/.inputrc
