@@ -3,7 +3,6 @@ alias ll='ls -ltrh'
 alias la='ll -A'
 alias l='ls -CF'
 alias df='df -Th'
-alias gd='git diff'
 alias h='history'
 
 # aliases for git
@@ -48,6 +47,22 @@ alias gta="git tag -a"
 alias gtd="git tag -d"
 alias gtl="git tag -l"
 alias gd='git diff'
+alias grv='git remote -v'
+alias grmv='git remote rename'
+alias grrm='git remote remove'
+alias grset='git remote set-url'
+alias grup='git remote update'
+alias grbi='git rebase -i'
+alias grbc='git rebase --continue'
+alias grba='git rebase --abort'
+alias gbr='git branch --remote'
+alias gcl='git config --list'
+alias gcp='git cherry-pick'
+alias glg='git log --stat --max-count=10'
+alias glgg='git log --graph --max-count=10'
+alias glgga='git log --graph --decorate --all'
+alias glo='git log --oneline --decorate --color'
+alias glog='git log --oneline --decorate --color --graph'
 
 # also load inputrc
 DIR=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
