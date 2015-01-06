@@ -65,5 +65,7 @@ alias glo='git log --oneline --decorate --color'
 alias glog='git log --oneline --decorate --color --graph'
 
 # also load inputrc
-DIR=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
-bind -f $DIR/.inputrc
+if [[ $- =~ i ]]; then
+    DIR=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
+    bind -f $DIR/.inputrc
+fi
