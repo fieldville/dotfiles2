@@ -73,7 +73,9 @@ fi
 if ! $(echo $TERM | grep -q -- '-256color') || ! $(infocmp screen-256color >/dev/null 2>&1); then
     echo -e '\n\n256-color mode not supported on this host.  Reverting TERM...\n'
     export TERM=`echo -n $TERM | sed 's/-256color//'`
-else
+fi
+
+if ! $(echo $TERM | grep -q -- 'vt100'); then
     # Colorize the prompt.
     yellow=$(tput setaf 3)
     green=$(tput setaf 2)
