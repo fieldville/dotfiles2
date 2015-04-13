@@ -70,7 +70,7 @@ if [ -r $HOME/.homesick ]; then
 fi
 
 # 256-color mode not supported on this host
-if ! infocmp screen-256color >/dev/null 2>&1 && echo $TERM | grep -q -- '-256color'; then
+if ! $(echo $TERM | grep -q -- '-256color') || ! $(infocmp screen-256color >/dev/null 2>&1); then
     echo -e '\n\n256-color mode not supported on this host.  Reverting TERM...\n'
     export TERM=`echo -n $TERM | sed 's/-256color//'`
 else
