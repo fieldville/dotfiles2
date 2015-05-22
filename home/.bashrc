@@ -43,4 +43,5 @@ if [ -f ~/.alias.private ]; then
     . ~/.alias.private
 fi
 
+export LESS="iSMR"
 set -o vi
