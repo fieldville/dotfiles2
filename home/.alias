@@ -5,6 +5,9 @@ alias l='ls -CF'
 alias df='df -Th'
 alias h='history'
 alias dmesg='dmesg -T'
+# for CentOS
+alias vi='vim'
+alias view='vim -R'
 
 # aliases for git
 alias gcl='git clone'
