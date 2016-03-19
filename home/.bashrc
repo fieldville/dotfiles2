@@ -45,3 +45,5 @@ fi
 
 export LESS="iSMR"
 set -o vi
+bind 'set horizontal-scroll-mode off'
+[[ -z "$TMUX" && -z "$WINDOW" && ! -z "$PS1" ]] && tmux
