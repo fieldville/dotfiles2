@@ -5,7 +5,8 @@ export HISTCONTROL=ignoredups:erasedups
 # Append to the history file, don't overwrite it.
 shopt -s histappend
 
-export PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
+#export PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
+export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 # History size up
 export HISTSIZE=100000
