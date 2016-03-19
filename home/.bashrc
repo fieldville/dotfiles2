@@ -46,4 +46,8 @@ fi
 export LESS="iSMR"
 set -o vi
 bind 'set horizontal-scroll-mode off'
+
+stty werase undef
+bind '"\C-w": unix-filename-rubout'
+
 [[ -z "$TMUX" && -z "$WINDOW" && ! -z "$PS1" ]] && tmux
