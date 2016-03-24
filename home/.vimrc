@@ -7,34 +7,33 @@
 "                                                                               "
 "                                                                               "
 "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+"{{{
 set nocompatible
 
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
-set history=50 " keep 50 lines of command line history
+set history=1000 " keep n lines of command line history
 set ruler      " show the cursor position all the time
 set showcmd    " display incomplete commands
 set incsearch  " do incremental searching
+set nobackup
 
-" Don't use Ex mode, use Q for formatting
-map Q gq
-
-" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
+let mapleader=","
+"}}}
+" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo, {{{
 " so that you can undo CTRL-U after inserting a line break.
 inoremap <C-U> <C-G>u<C-U>
-
-" Switch syntax highlighting on, when the terminal has colors
+"}}}
+" Switch syntax highlighting on, when the terminal has colors {{{
 " Also switch on highlighting the last used search pattern.
-"{{{
 if &t_Co > 2 || has("gui_running")
   syntax on
   set hlsearch
 endif
+nnoremap <Esc><Esc> :nohlsearch<CR>
 "}}}
-
-" Only do this part when compiled with support for autocommands.
-"{{{
+" Only do this part when compiled with support for autocommands. {{{
 if has("autocmd")
   " Enable file type detection.
   " Use the default filetype settings, so that mail gets 'tw' set to 72,
@@ -53,20 +52,14 @@ if has("autocmd")
   " (happens when dropping a file on gvim).
   " Also don't do it when the mark is in the first line, that is the default
   " position when opening a file.
-  autocmd BufReadPost *
-    \ if line("'\"") > 1 && line("'\"") <= line("$") |
-    \   exe "normal! g`\"" |
-    \ endif
+  autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
   augroup END
 else
   set autoindent    " always set autoindenting on
-endif " has("autocmd")
+endif
 "}}}
-
-set nobackup
 " 初回のみ読み込まれるデフォルト定義 {{{
-if has('vim_starting')
   set tabstop=8
   set softtabstop=4
   set shiftwidth=4
@@ -80,11 +73,9 @@ if has('vim_starting')
   set title
   " バックスペースでインデントや改行を削除できるようにする
   set backspace=2
-endif
+  " 分割幅を均等でなくする。<C-W>=で均等に、<C-W>|で最大化
+  set noequalalways
 "}}}
-
-nnoremap <Esc><Esc> :nohlsearch<CR>
-
 "set tags {{{
 if has("autochdir")
   set autochdir
@@ -92,23 +83,16 @@ if has("autochdir")
 else
   set tags=./tags,./../tags,./*/tags,./../../tags,./../../../tags,./../../../../tags,./../../../../../tags
 endif
-nnoremap <C-]> g]
+"nnoremap <C-]> g]
 "}}}
-
-let mapleader=","
-
 " 検索などで飛んだらそこを真ん中に {{{
-for maptype in ['n', 'N', '*', '#', 'g*', 'g#', 'G']
-  execute 'nmap' maptype maptype . 'zz'
-endfor
+for maptype in ['n', 'N', '*', '#', 'g*', 'g#', 'G'] | execute 'nmap' maptype maptype . 'zz' | endfor
 "}}}
-
 " escape automatically / ? {{{
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
 cnoremap <expr> ? getcmdtype() == '?' ? '\?' : '?'
 "}}}
-
-" fileencoding "{{{
+" fileencoding {{{
 for [enc, cmds, key] in [
   \ ['utf-8'      , ['Utf8']            , 'u'],
   \ ['euc-jp'     , ['Eucjp']           , 'e'],
@@ -122,13 +106,11 @@ for [enc, cmds, key] in [
   execute 'nmap <Leader>' . toupper(key) ':set fileencoding=' . enc . '<CR>'
 endfor
 "}}}
-
 " 文字コードの自動認識 {{{
 if filereadable(expand("$HOME/.vim/_auto_fileencoding.vim"))
   source $HOME/.vim/_auto_fileencoding.vim
 endif
 "}}}
-
 " 改行コードの自動認識 {{{
 set fileformats=unix,dos,mac
 " □とか○の文字があってもカーソル位置がずれないようにする
@@ -136,33 +118,29 @@ if exists('&ambiwidth')
   set ambiwidth=double
 endif
 "}}}
-
-" 大文字小文字の両方が含まれている場合は大文字小文字を区別
+" 大文字小文字の両方が含まれている場合は大文字小文字を区別 {{{
 set smartcase
-
+"}}}
 " コマンドライン補完 {{{
 set wildmenu
 set wildmode=list:longest
 "}}}
-
-"検索後のスクロールから下の行がわかる
+" 検索後、画面の端でスクロールするのではなく、数行余裕があるうちにスクロールする {{{
 set scrolloff=5
-
-" window movement
-"{{{
-for key in ['h', 'j', 'k', 'l']
-  execute 'nnoremap <silent> <C-' . key . '> :wincmd' key . '<CR>'
-endfor
 "}}}
-
-" change window size
-"{{{
+" window movement {{{
+for key in ['h', 'j', 'k', 'l'] | execute 'nnoremap <silent> <C-' . key . '> :wincmd' key . '<CR>' | endfor
+"}}}
+" remap for split, vsplit {{{
+nnoremap <C-w>- :<C-u>sp<CR>
+nnoremap <C-w>\ :<C-u>vs<CR>
+"}}}
+" change window size {{{
 nnoremap <silent> <Up>    :2 wincmd -<CR>
 nnoremap <silent> <Down>  :2 wincmd +<CR>
 nnoremap <silent> <Left>  :5 wincmd <<CR>
 nnoremap <silent> <Right> :5 wincmd ><CR>
 "}}}
-
 "折れ曲がった行にも移動 {{{
 "set wrap のときに便利
 for key in ['j', 'k']
@@ -171,7 +149,6 @@ for key in ['j', 'k']
 endfor
 "set showbreak=…
 "}}}
-
 " folding shortcut {{{
 noremap [space] <nop>
 nmap <Space> [space]
@@ -188,7 +165,6 @@ noremap [space]i zMzv " 全ての折畳を閉じる => カーソル行を表示�
 noremap [space]r zR   " 全ての折畳を開く
 noremap [space]f zf   " 折畳を作成する操作
 "}}}
-
 " toggle command {{{
 for [cmd_name, opt_name, key] in [
   \ ['ToggleNumber'      , 'number'      , 'N'],
@@ -204,7 +180,6 @@ endfor
 " cf http://vimcasts.org/episodes/soft-wrapping-text/
 command! Wrap set wrap linebreak nolist
 "}}}
-
 " for set list {{{
 " Use the same symbols as TextMate for tabstops and EOLs
 try
@@ -217,21 +192,17 @@ endtry
 highlight NonText ctermfg=DarkBlue
 highlight SpecialKey ctermfg=DarkBlue
 "}}}
-
-nnoremap <Leader>v :split $MYVIMRC<CR>
-nnoremap <Leader>gv :split $MYGVIMRC<CR>
-
-nnoremap <Leader>ev :e $MYVIMRC<CR>
-nnoremap <Leader>egv :e $MYGVIMRC<CR>
+" edit vimrc {{{
+nnoremap <Leader>v :tabnew $MYVIMRC<CR>     " vimrcを開く
+nnoremap <Leader>gv :tabnew $MYVIMRC<CR>     " gvimrcを開く
 
 if has("gui_running")
-  nnoremap <Leader>so :source $MYVIMRC \| source $MYGVIMRC<CR>
+  nnoremap <Leader>so :source $MYVIMRC \| source $MYGVIMRC<CR>  " vimrcをリロード
 else
-  nnoremap <Leader>so :source $MYVIMRC<CR>
+  nnoremap <Leader>so :source $MYVIMRC<CR>  " vimrcをリロード
 endif
 "}}}
-
-" FileType Indent "{{{
+" FileType Indent {{{
 set et
 augroup auto_filetype_indent
 autocmd FileType apache     setlocal sw=4 sts=4 ts=4 et
@@ -246,7 +217,7 @@ autocmd FileType eruby      setlocal sw=2 sts=2 ts=2 et
 autocmd FileType html       setlocal sw=2 sts=2 ts=2 et
 autocmd FileType java       setlocal sw=4 sts=4 ts=4 et
 autocmd FileType jsp        setlocal sw=2 sts=2 ts=2 et
-autocmd FileType javascript setlocal sw=2 sts=2 ts=2 et
+autocmd FileType javascript setlocal sw=4 sts=4 ts=4 et
 autocmd FileType perl       setlocal sw=4 sts=4 ts=4 et
 autocmd FileType php        setlocal sw=4 sts=4 ts=4 et
 autocmd FileType python     setlocal sw=4 sts=4 ts=4 et
@@ -265,9 +236,10 @@ autocmd FileType zsh        setlocal sw=4 sts=4 ts=4 et
 autocmd FileType scala      setlocal sw=2 sts=2 ts=2 et
 autocmd FileType mkd        setlocal sw=4 sts=4 ts=4 noet si nofen
 autocmd FileType text       setlocal et si
+autocmd FileType aws.json   setlocal sw=2 sts=2 ts=2 et fdm=indent nowrap
+autocmd FileType json       setlocal sw=2 sts=2 ts=2 et fdm=indent nowrap
 augroup END
 "}}}
-
 " for grep {{{
 "{{{ 外部grep
 let &grepprg="find . -type f -name '*'
@@ -304,11 +276,8 @@ let &grepprg="find . -type f -name '*'
               \ -a -not -regex '.*schema.rb$'
               \ -print0 \\| xargs -0 grep -nH"
 "}}}
-
 " カーソル直下の単語(Word)
 nmap <C-g><C-w> :grep "<C-R><C-W>" \| bot cw<CR>
-" Ag.vim
-nmap <C-g><C-k> :Ag <C-R><C-W><CR>
 " カーソル直下の単語(WORD)(C-aはscreenとバッティングするためC-eに)
 nmap <C-g><C-e> :grep "<C-R><C-A>" \| bot cw<CR>
 " 最後に検索した単語
@@ -319,20 +288,6 @@ nmap <silent> <C-n> :<C-u>cnext<CR>
 nmap <silent> <C-p> :<C-u>cprevious<CR>
 
 "}}}
-
-" コマンドを実行 {{{
-"nnoremap <Leader>ex :execute '!' &ft ' %'<CR>
-nnoremap <silent> <Leader>ex :execute 'set makeprg=' . expand(&ft) . '\ ' . expand('%')<CR>:make \| cw \| if len(getqflist()) != 0 \| bot copen \| endif<CR>
-"}}}
-
-" Ctrl+Nでコマンドライン履歴を一つ進む(前方一致)
-cnoremap <C-P> <UP>
-" Ctrl+Pでコマンドライン履歴を一つ戻る(前方一致)
-cnoremap <C-N> <DOWN>
-
-" 全選択
-nnoremap <Leader>a ggVG
-
 " color {{{
 set background=light
 
@@ -347,7 +302,6 @@ highlight PmenuSbar ctermbg=0
 highlight clear Folded
 highlight clear FoldColumn
 "}}}
-
 " 全角スペースの表示 {{{
 highlight ZenkakuSpace cterm=underline ctermfg=White
 try
@@ -355,7 +309,6 @@ try
 catch
 endtry
 "}}}
-
 " カーソル行 {{{
 "{{{
 if has("gui_running")
@@ -374,50 +327,14 @@ end
 highlight clear CursorLine
 highlight CursorLine cterm=underline gui=underline
 "}}}
-
-" コマンド実行中は再描画しない
-"set lazyredraw
-" 高速ターミナル接続を行う
-set ttyfast
-
-" Visually select the text that was last edited/pasted
-nmap gV `[v`]
-
-" F1 for help {{{
-" <F1>でヘルプ
-nnoremap <F1>  :<C-u>help<Space>
-" カーソル下のキーワードをヘルプでひく
-nnoremap <F1><F1> :<C-u>help<Space><C-r><C-w><Enter>
-"}}}
-
 " map for buffer {{{
-nnoremap <Leader>bp :bprevious<CR>
-nnoremap <Leader>bn :bnext<CR>
-nnoremap <Leader>bd :bdelete<CR>
 nmap <silent> <C-b><C-n> :<C-u>bnext<CR>
 nmap <silent> <C-b><C-p> :<C-u>bprevious<CR>
 "}}}
-
 " map for syntastic, etc {{{
 nmap <silent> <C-g><C-n> :<C-u>lnext<CR>
 nmap <silent> <C-g><C-p> :<C-u>lprevious<CR>
 "}}}
-
-" native2ascii {{{
-function! s:jproperties_filetype_settings()
-  augroup jprop
-    autocmd! jprop
-    command! -range Native2Ascii :<line1>,<line2>!native2ascii -encoding utf8 -reverse
-    nnoremap <Leader>na :%Native2Ascii<CR>
-    vnoremap <Leader>na :Native2Ascii<CR>
-  augroup END
-endfunction
-autocmd FileType jproperties call s:jproperties_filetype_settings()
-"}}}
-
-" Ctrl + jでescape
-inoremap <C-j> <ESC>
-
 "カーソル上の言葉をclipboardへヤンク "{{{
 function! s:yank_to_clipboard()
   if &clipboard =~# 'unnamed'
@@ -430,7 +347,6 @@ function! s:yank_to_clipboard()
 endfunction
 nmap tt :call <SID>yank_to_clipboard()<CR>
 "}}}
-
 " 単語境界に-を追加 {{{
 setlocal iskeyword +=-
 function! s:toggle_is_key_word_hyphen() "{{{
@@ -444,7 +360,6 @@ endfunction "}}}
 command! ToggleIsKeyWordHyPhen  call s:toggle_is_key_word_hyphen()
 nnoremap <Space>K :call <SID>toggle_is_key_word_hyphen()<CR>
 "}}}
-
 " clipboardにunnamedを追加 {{{
 function! s:toggle_clipboard_unnamed() "{{{
   if &clipboard =~# 'unnamed'
@@ -458,7 +373,6 @@ endfunction "}}}
 command! ToggleClipboardUnnamed call s:toggle_clipboard_unnamed()
 nnoremap <Space>P :call <SID>toggle_clipboard_unnamed()<CR>
 "}}}
-
 " 折り畳み列幅 "{{{
 function! s:toggle_fold_column()
   if &foldcolumn
@@ -470,77 +384,16 @@ endfunction
 command! ToggleFoldColumn  call s:toggle_fold_column()
 nnoremap <Space>G :call <SID>toggle_fold_column()<CR>
 "}}}
-
-" 末尾空白削除 " {{{
+" 末尾空白削除 {{{
 "autocmd FileType cpp,python,perl,ruby,java autocmd BufWritePre <buffer> :%s/\s\+$//e
-
 " cf: vim-bad-whitespace
-"function! s:trim_last_white_space() range
-"  execute a:firstline . ',' . a:lastline . 's/\s\+$//e'
-"endfunction
-"command! -range=% Trim :<line1>,<line2>call <SID>trim_last_white_space()
-"nnoremap <Leader>tr :%Trim<CR>
-"vnoremap <Leader>tr :Trim<CR>
+function! s:trim_last_white_space() range
+  execute a:firstline . ',' . a:lastline . 's/\s\+$//e'
+endfunction
+command! -range=% Trim :<line1>,<line2>call <SID>trim_last_white_space()
+nnoremap <Leader>tr :%Trim<CR>
+vnoremap <Leader>tr :Trim<CR>
 "}}}
-
-" タブ移動 {{{
-noremap gh gT
-noremap gl gt
-"}}}
-
-" HTML Key Mappings for Typing Character Codes: {{{
-"
-" |--------------------------------------------------------------------
-" |Keys    |Insert   |For  |Comment
-" |--------|---------|-----|-------------------------------------------
-" |\&      |&amp;    |&    |ampersand
-" |\<      |&lt;     |<    |less-than sign
-" |\>      |&gt;     |>    |greater-than sign
-" |\.      |&middot; |・   |middle dot (decimal point)
-" |\?      |&#8212;  |?    |em-dash
-" |\2      |&#8220;  |“   |open curved double quote
-" |\"      |&#8221;  |”   |close curved double quote
-" |\`      |&#8216;  |‘   |open curved single quote
-" |\'      |&#8217;  |’   |close curved single quote (apostrophe)
-" |\`      |`        |`    |OS-dependent open single quote
-" |\'      |'        |'    |OS-dependent close or vertical single quote
-" |\<Space>|&nbsp;   |     |non-breaking space
-" |---------------------------------------------------------------------
-"
-" > http://www.stripey.com/vim/html.html
-"
-"
-autocmd BufEnter * if &filetype == "html" | call MapHTMLKeys() | endif
-function! MapHTMLKeys(...)
-  if a:0 == 0 || a:1 != 0
-    inoremap \\ \
-    inoremap \& &amp;
-    inoremap \< &lt;
-    inoremap \> &gt;
-    inoremap \. ・
-    inoremap \- &#8212;
-    inoremap \<Space> &nbsp;
-    inoremap \` &#8216;
-    inoremap \' &#8217;
-    inoremap \2 &#8220;
-    inoremap \" &#8221;
-    autocmd! BufLeave * call MapHTMLKeys(0)
-  else
-    iunmap \\
-    iunmap \&
-    iunmap \<
-    iunmap \>
-    iunmap \-
-    iunmap \<Space>
-    iunmap \`
-    iunmap \'
-    iunmap \2
-    iunmap \"
-    autocmd! BufLeave *
-  endif " test for mapping/unmapping
-endfunction " MapHTMLKeys()
-"}}}
-
 " QuickFixToggle {{{
 function! s:quick_fix_toggle()
   let _ = winnr('$')
@@ -551,7 +404,6 @@ function! s:quick_fix_toggle()
 endfunction
 nnoremap <silent> <Space>: :call <SID>quick_fix_toggle()<CR>
 "}}}
-
 " LocationListToggle {{{
 function! s:location_list_toggle()
   let _ = winnr('$')
@@ -562,7 +414,6 @@ function! s:location_list_toggle()
 endfunction
 nnoremap <silent> <Space>" :call <SID>location_list_toggle()<CR>
 "}}}
-
 " ChangeCurrentDir {{{
 command! -nargs=? -complete=dir -bang CD  call s:ChangeCurrentDir('<args>', '<bang>')
 function! s:ChangeCurrentDir(directory, bang)
@@ -576,11 +427,8 @@ function! s:ChangeCurrentDir(directory, bang)
     pwd
   endif
 endfunction
-
-" Change current directory.
 nnoremap <silent> <Space>cd :<C-u>CD<CR>
 "}}}
-
 " for perl {{{
 function! s:perl_filetype_settings()
   " perltidy
@@ -593,7 +441,6 @@ augroup perl_filetype
   autocmd! BufNewFile,BufRead *.tmpl setf tt2html
 augroup END
 "}}}
-
 " skelton {{{
 augroup SkeletonAu
   autocmd!
@@ -602,63 +449,60 @@ augroup SkeletonAu
   endfor
 augroup END
 "}}}
-
-" 括弧までを消したり置き換えたりする "{{{
-" http://vim-users.jp/2011/04/hack214/
-onoremap ) t)
-onoremap ( t(
-vnoremap ) t)
-vnoremap ( t(
-"}}}
-
 " Map semicolon to colon {{{
 nnoremap ; :
 "}}}
-
-" 矩形選択で行末を超えてブロックを選択できるようにする "{{{
+" 矩形選択で行末を超えてブロックを選択できるようにする {{{
 set virtualedit+=block
 "}}}
-
-" argdoの時の警告を無視 "{{{
+" argdoの時の警告を無視 {{{
 " http://vimcasts.org/episodes/using-argdo-to-change-multiple-files/
 set hidden
 "}}}
-
-" diffoff! "{{{
+" diffoff! {{{
 nmap <Leader>d :diffoff!<CR>
 "}}}
+" tab function {{{
+nnoremap [Tab] <Nop>
+nmap t [Tab]
 
-" tab function "{{{
-nnoremap [Tag] <Nop>
-nmap t [Tag]
-
-for n in range(1, 9)
-  execute 'nnoremap <silent> [Tag]'.n  ':<C-u>tabnext'.n.'<CR>'
-endfor
-map <silent> [Tag]c :tablast <bar> tabnew<CR>
-map <silent> [Tag]x :tabclose<CR>
-map <silent> [Tag]n :tabnext<CR>
-map <silent> [Tag]p :tabprevious<CR>
+for n in range(1, 9) | execute 'nnoremap <silent> [Tab]'.n  ':<C-u>tabnext'.n.'<CR>' | endfor
+map <silent> [Tab]c :tablast <bar> tabnew<CR>
+map <silent> [Tab]d :tabclose<CR>
+map <silent> [Tab]n :tabnext<CR>
+map <silent> [Tab]p :tabprevious<CR>
+noremap gh gT   " Tab move to left
+noremap gl gt   " Tab move to right
 "}}}
-
-" shellpipe "{{{
+" shellpipe {{{
 " no buffering, to utf8
 "if $LANG =~# 'UTF'
 "  set shellpipe=2>\&1\|nkf\ -uw>%s
 "endif
 "}}}
-
-" temporary workaround for previm "{{{
+" temporary workaround for previm {{{
 fun! ChangeFileTypeToMarkDown(ft)
   let &ft = a:ft
 endfun
 au FileType mkd call ChangeFileTypeToMarkDown('markdown')
 "}}}
-
-" not to use undofile after 7.4.227 "{{{
-"set noundofile
+" not to use undofile after 7.4.227 {{{
+set noundofile
 "}}}
-
+" jq {{{
+set noundofile
+if executable('jq')
+  function! s:jq(...)
+    execute '%!jq' (a:0 == 0 ? '.' : a:1)
+  endfunction
+  command! -bar -nargs=? Jq call s:jq(<f-args>)
+endif
+"}}}
+" helpをtab helpに {{{
+cabbrev help tab help
+"}}}
+"======================================== for plugin settings ======================================== {{{
+"}}}
 " yanktmp.vim {{{
 if v:version < 700 || (exists('g:loaded_yanktmp') && g:loaded_yanktmp || &cp)
   finish
@@ -689,7 +533,6 @@ map <silent> sy :call YanktmpYank()<CR>
 map <silent> sp :call YanktmpPaste_p()<CR>
 map <silent> sP :call YanktmpPaste_P()<CR>
 " }}}
-
 " nelstrom/vim-visual-star-search {{{
 " From http://got-ravings.blogspot.com/2008/07/vim-pr0n-visual-search-mappings.html
 
@@ -708,7 +551,6 @@ xnoremap # :<C-u>call <SID>VSetSearch('?')<CR>?<C-R>=@/<CR><CR>
 nmap <leader>* :execute 'noautocmd vimgrep /\V' . substitute(escape(expand("<cword>"), '\'), '\n', '\\n', 'g') . '/ **'<CR>
 vmap <leader>* :<C-u>call <SID>VSetSearch()<CR>:execute 'noautocmd vimgrep /' . @/ . '/ **'<CR>
 " }}}
-
 " bad-whitespace.vim {{{
 function! s:EraseBadWhitespace(line1,line2)
   let l:save_cursor = getpos(".")
@@ -719,6 +561,8 @@ endfunction
 " Run :EraseBadWhitespace to remove end of line white space.
 command! -range=% EraseBadWhitespace call <SID>EraseBadWhitespace(<line1>,<line2>)
 " }}}
-"
+" {{{
 " vim: foldmethod=marker
 " vim: foldcolumn=3
+" vim: nowrap
+"}}}
