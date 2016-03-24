@@ -1,0 +1,19 @@
+alias ll='ls -ltr'
+alias la='ll -A'
+
+#export VIMINIT="let \$MYVIMRC='$SSHHOME/.sshrc.d/.vimrc' | source \$MYVIMRC"
+export VIMINIT="so $SSHHOME/.sshrc.d/.vimrc"
+
+export INPUTRC="$SSHHOME/.sshrc.d/.inputrc"
+
+function helpfuls() {
+  RED=$(tput setaf 1)
+  GREEN=$(tput setaf 2)
+  YELLOW=$(tput setaf 3)
+  BLUE=$(tput setaf 4)
+  MAGENTA=$(tput setaf 5)
+  RS=$(tput sgr0)
+  BOLD=$(tput bold)
+  UL=$(tput smul)
+}
+export -f helpfuls
