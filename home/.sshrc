@@ -1,4 +1,4 @@
-alias ll='ls -ltr'
+alias ll='ls -ltrh'
 alias la='ll -A'
 
 #export VIMINIT="let \$MYVIMRC='$SSHHOME/.sshrc.d/.vimrc' | source \$MYVIMRC"
@@ -17,3 +17,4 @@ function helpfuls() {
   UL=$(tput smul)
 }
 export -f helpfuls
+set -o vi
