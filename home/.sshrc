@@ -1,3 +1,4 @@
+export HISTCONTROL=ignoreboth
 alias ll='ls -ltrh'
 alias la='ll -A'
 
