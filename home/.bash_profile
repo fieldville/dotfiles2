@@ -1,87 +1,36 @@
-#!/usr/bin/env bash
-# {{{
-# vim: foldmethod=marker
-# vim: foldcolumn=4
-# }}}
+# To the extent possible under law, the author(s) have dedicated all
+# copyright and related and neighboring rights to this software to the
+# public domain worldwide. This software is distributed without any warranty.
+# You should have received a copy of the CC0 Public Domain Dedication along
+# with this software.
+# If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
-# bash-it {{{
-# Load RVM, if you are using it
-[[ -s $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm
+# ~/.bash_profile: executed by bash(1) for login shells.
 
-# Add rvm gems and nginx to the path
-export PATH=$PATH:~/.gem/ruby/1.8/bin:/opt/nginx/sbin
+# The copy in your home directory (~/.bash_profile) is yours, please
+# feel free to customise it to create a shell
+# environment to your liking.  If you feel a change
+# would be benifitial to all, please feel free to send
+# a patch to the msys2 mailing list.
 
-# Path to the bash it configuration
-export BASH_IT=$HOME/.bash_it
+# User dependent .bash_profile file
 
-# Lock and Load a custom theme file
-# location /.bash_it/themes/
-#export BASH_IT_THEME='powerline'
-#export BASH_IT_THEME='bakke'
-export BASH_IT_THEME='doubletime_multiline_pyonly'
-
-# Don't check mail when opening terminal.
-unset MAILCHECK
-
-#}}}
-
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
-    #alias grep='grep --color=auto'
-    #alias fgrep='fgrep --color=auto'
-    #alias egrep='egrep --color=auto'
+# source the users bashrc if it exists
+if [ -f "${HOME}/.bashrc" ] ; then
+  source "${HOME}/.bashrc"
 fi
 
-# Load Bash It
-if [ -r $BASH_IT ]; then
-    source $BASH_IT/bash_it.sh
-fi
+# Set PATH so it includes user's private bin if it exists
+# if [ -d "${HOME}/bin" ] ; then
+#   PATH="${HOME}/bin:${PATH}"
+# fi
 
-if [ -r $HOME/.homesick ]; then
-    source "$HOME/.homesick/repos/homeshick/homeshick.sh"
-    source "$HOME/.homesick/repos/homeshick/completions/homeshick-completion.bash"
-fi
+# Set MANPATH so it includes users' private man if it exists
+# if [ -d "${HOME}/man" ]; then
+#   MANPATH="${HOME}/man:${MANPATH}"
+# fi
 
-# 256-color mode not supported on this host
-if ! $(echo $TERM | grep -q -- '-256color') || ! $(infocmp screen-256color >/dev/null 2>&1); then
-    echo -e '\n\n256-color mode not supported on this host.  Reverting TERM...\n'
-    export TERM=`echo -n $TERM | sed 's/-256color//'`
-fi
-
-if ! $(echo $TERM | grep -q -- 'vt100'); then
-    # Colorize the prompt.
-    yellow=$(tput setaf 3)
-    green=$(tput setaf 2)
-    blue=$(tput setaf 104)
-    bold=$(tput bold)
-    reset=$(tput sgr0)
-
-    PS1="\[$yellow\]\u\[$reset\]@\[$green\]\h\[$reset\]:\[$blue$bold\]\w\[$reset\]$ "
-
-    # Enable color support of ls and also add handy aliases.
-    export CLICOLOR=1
-    export LSCOLORS=ExFxCxDxBxegedabagacad
-    if [ -x /usr/bin/dircolors ]; then
-        test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-        alias ls='ls --color=auto'
-        alias grep='grep --color=auto'
-        alias fgrep='fgrep --color=auto'
-        alias egrep='egrep --color=auto'
-    fi
-fi
-
-stty stop undef
-stty start undef
-
-# if running bash
-if [ -n "$BASH_VERSION" ]; then
-    # include .bashrc if it exists
-    if [ -f "$HOME/.bashrc" ]; then
-        . "$HOME/.bashrc"
-    fi
-fi
+# Set INFOPATH so it includes users' private info if it exists
+# if [ -d "${HOME}/info" ]; then
+#   INFOPATH="${HOME}/info:${INFOPATH}"
+# fi
