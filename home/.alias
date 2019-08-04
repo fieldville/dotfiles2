@@ -89,3 +89,5 @@ if [[ $- =~ i ]]; then
     DIR=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
     bind -f $DIR/.inputrc
 fi
+
+alias cie='conda info -e'
