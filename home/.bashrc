@@ -48,7 +48,15 @@ export LESS="iSMR"
 set -o vi
 bind 'set horizontal-scroll-mode off'
 
-stty werase undef
+# disable because error occured when start GUI
+#stty werase undef
 bind '"\C-w": unix-filename-rubout'
 
-[[ -z "$TMUX" && -z "$WINDOW" && ! -z "$PS1" ]] && tmux
+#[[ -z "$TMUX" && -z "$WINDOW" && ! -z "$PS1" ]] && tmux
+
+. /usr/share/autojump/autojump.sh
+
+# Append /usr/local/bin to the path.
+export PATH=/usr/local/bin:$PATH
+export PATH=/sbin:/usr/sbin:$PATH
+export PATH=~/.local/bin:$PATH
