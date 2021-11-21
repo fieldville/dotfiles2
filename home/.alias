@@ -208,3 +208,13 @@ dex()  { docker exec -i -t --privileged $@ ;}
 docker_alias_completion_wrapper __docker_complete_containers_all dex
 ########################################
 
+alias fdh="fd --no-ignore-vcs -H -E '.git/'"
+alias rgh="rg -."
+
+alias emacs="emacs -nw"
+alias e="emacs"
+
+alias vi=nvim
+alias view='nvim -R'
+alias vimdiff='nvim -d'
+
