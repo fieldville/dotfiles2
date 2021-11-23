@@ -218,3 +218,7 @@ alias vi=nvim
 alias view='nvim -R'
 alias vimdiff='nvim -d'
 
+alias cie='conda info -e'
+alias cee='conda env export'
+
+
