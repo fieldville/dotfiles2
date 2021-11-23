@@ -1,5 +1,4 @@
-set editing-mode vi
-set keymap vi-insert
+#set editing-mode vi
 set convert-meta off
 set meta-flag on
 
@@ -12,27 +11,35 @@ set completion-ignore-case on
 
 # historical backward search with linehead string binded to up-key
 #
-#"\e[A": history-search-backward
+"\e[A": history-search-backward
 Control-p: history-search-backward
 
 # historical forward search with linehead string binded to down-key
 #
-#"\e[B": history-search-forward
+"\e[B": history-search-forward
 Control-n: history-search-forward
 
+$if mode=vi
+  set keymap vi-insert
+  set bell-style visible
 
-# cycle forward
-Control-k: menu-complete
-# cycle backward
-Control-j: menu-complete-backward
+  set show-all-if-ambiguous on
 
+  Control-l: clear-screen
 
-set bell-style visible
+  # cycle forward
+  Control-k: menu-complete
+  # cycle backward
+  Control-j: menu-complete-backward
 
-set show-all-if-ambiguous on
+  set bind-tty-special-chars off
+  Control-u: kill-whole-line
+  Control-w: backward-kill-word
+$endif
+$if mode=emacs
+  # cycle forward
+  "\ek": menu-complete
+  # cycle backward
+  "\ej": menu-complete-backward
+$endif
 
-Control-l: clear-screen
-
-set bind-tty-special-chars off
-Control-u: kill-whole-line
-Control-w: backward-kill-word
