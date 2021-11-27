@@ -45,7 +45,7 @@ if [ -f ~/.alias.private ]; then
 fi
 
 export LESS="iSMR"
-set -o vi
+#set -o vi
 bind 'set horizontal-scroll-mode off'
 
 # disable because error occured when start GUI
