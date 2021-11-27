@@ -60,3 +60,10 @@ bind '"\C-w": unix-filename-rubout'
 export PATH=/usr/local/bin:$PATH
 export PATH=/sbin:/usr/sbin:$PATH
 export PATH=~/.local/bin:$PATH
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -f ~/.falias ] && source ~/.falias
+[ -f ~/.kalias ] && source ~/.kalias
+[ -f ~/.dalias ] && source ~/.dalias
+
+[ -r ~/.byobu/prompt ] && . ~/.byobu/prompt #byobu-prompt#
