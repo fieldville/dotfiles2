@@ -138,6 +138,8 @@ alias vimdiff='nvim -d'
 alias cie='conda info -e'
 alias cee='conda env export'
 
+alias lg='lazygit'
+
 alias tt='terraform'
 alias ttp='terraform plan'
 alias tta='terraform apply'
