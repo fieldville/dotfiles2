@@ -7,8 +7,8 @@ alias cdwork_ios='cd ~/Documents/00_Work/iOS'
 alias cdwork='cd ~/Documents/00_Work'
 alias cdworkspace='cd ~/Documents/00_Work/workspace'
 
-. /usr/local/etc/profile.d/colorsvn-env.sh
-. ~/perl5/perlbrew/etc/bashrc
+[[ -f /usr/local/etc/profile.d/colorsvn-env.sh ]] && . /usr/local/etc/profile.d/colorsvn-env.sh
+[[ -f ~/perl5/perlbrew/etc/bashrc ]] && . ~/perl5/perlbrew/etc/bashrc
 
 export TOMCAT_HOME=/usr/local/opt/tomcat/libexec
 export GROOVY_HOME=/usr/local/opt/groovy/libexec
