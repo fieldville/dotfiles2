@@ -1,3 +1,38 @@
+export PGDATA=/usr/local/var/postgres
+
+alias iostat_d='iostat -d'
+alias iostat_c='iostat -c'
+alias Psql='psql format56 -U postgres'
+alias cdwork_ios='cd ~/Documents/00_Work/iOS'
+alias cdwork='cd ~/Documents/00_Work'
+alias cdworkspace='cd ~/Documents/00_Work/workspace'
+
+. /usr/local/etc/profile.d/colorsvn-env.sh
+. ~/perl5/perlbrew/etc/bashrc
+
+export TOMCAT_HOME=/usr/local/opt/tomcat/libexec
+export GROOVY_HOME=/usr/local/opt/groovy/libexec
+export ANDROID_SDK_ROOT=/usr/local/opt/android-sdk
+export CATALINA_OPTS="-server -Xmx256M -Xms128M -Xss256k -Djava.awt.headless=true"
+
+export VAGRANT_HOME=/Users/naoki_ichihara/Vagrant/.vagrant.d
+
+[[ -s `brew --prefix`/etc/profile.d/z.sh ]] && . `brew --prefix`/etc/profile.d/z.sh
+
+export PATH=$ANDROID_SDK_ROOT/tools:$PATH
+export PATH=/usr/local/share/npm/bin:$PATH
+export PATH=~/tools:$PATH
+export PATH=/usr/local/etc/openssl/misc:$PATH
+export PATH=~/Library/Python/2.7/bin:$PATH
+export PATH=$HOME/.cargo/bin:$PATH
+
+complete -C aws_completer aws
+eval "$(direnv hook bash)"
+
+if [ -f ~/.function.bash ]; then
+    . ~/.function.bash
+fi
+
 # some more ls aliases
 alias ll='ls -ltrh'
 alias la='ll -A'
@@ -103,4 +138,7 @@ alias vimdiff='nvim -d'
 alias cie='conda info -e'
 alias cee='conda env export'
 
-
+alias tt='terraform'
+alias ttp='terraform plan'
+alias tta='terraform apply'
+alias ttm='terraform fmt -recursive'
