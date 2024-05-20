@@ -8,7 +8,7 @@ alias cdwork='cd ~/Documents/00_Work'
 alias cdworkspace='cd ~/Documents/00_Work/workspace'
 
 [[ -f /usr/local/etc/profile.d/colorsvn-env.sh ]] && . /usr/local/etc/profile.d/colorsvn-env.sh
-[[ -f ~/perl5/perlbrew/etc/bashrc ]] && . ~/perl5/perlbrew/etc/bashrc
+#[[ -f ~/perl5/perlbrew/etc/bashrc ]] && . ~/perl5/perlbrew/etc/bashrc
 
 export TOMCAT_HOME=/usr/local/opt/tomcat/libexec
 export GROOVY_HOME=/usr/local/opt/groovy/libexec
@@ -17,7 +17,7 @@ export CATALINA_OPTS="-server -Xmx256M -Xms128M -Xss256k -Djava.awt.headless=tru
 
 export VAGRANT_HOME=/Users/naoki_ichihara/Vagrant/.vagrant.d
 
-[[ -s `brew --prefix`/etc/profile.d/z.sh ]] && . `brew --prefix`/etc/profile.d/z.sh
+#[[ -s `brew --prefix`/etc/profile.d/z.sh ]] && . `brew --prefix`/etc/profile.d/z.sh
 
 export PATH=$ANDROID_SDK_ROOT/tools:$PATH
 export PATH=/usr/local/share/npm/bin:$PATH
@@ -27,7 +27,7 @@ export PATH=~/Library/Python/2.7/bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
 
 complete -C aws_completer aws
-eval "$(direnv hook bash)"
+#eval "$(direnv hook bash)"
 
 if [ -f ~/.function.bash ]; then
     . ~/.function.bash
