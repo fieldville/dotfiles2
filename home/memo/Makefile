@@ -6,9 +6,9 @@ create:
 	[ "$(PAST_FILE)" != "$(TODAY_FILE)" ] && cp -f $(PAST_FILE) $(TODAY_FILE) || true
 	sed -i "1s@.*@$(TODAY)@" $(TODAY_FILE)
 	git add $(shell ls memo-*.md | grep -v $(TODAY_FILE))
+	git commit -am "$(shell date +%Y%m%d)"
 
 today: create
-	git commit -am "$(shell date +%Y%m%d)"
 	nvim $(TODAY_FILE)
 
 archive-files:
