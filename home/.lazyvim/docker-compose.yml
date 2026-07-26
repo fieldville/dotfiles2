@@ -1,0 +1,20 @@
+services:
+  lazyvim:
+    build: .
+    image: lazyvim-sandbox
+    container_name: lazyvim-container
+    stdin_open: true
+    tty: true
+    volumes:
+      # ホスト側の作業ディレクトリをコンテナ内にマウント
+      - .:/workspace
+      # ビルド時にダウンロードされたプラグインやキャッシュをそのまま活かすため、
+      # 必要に応じて名前付きボリュームで永続化（ビルド時の状態を保持したい場合は消してもOK）
+      - lazyvim-share:/root/.local/share/nvim
+      - lazyvim-state:/root/.local/state/nvim
+      - lazyvim-cache:/root/.cache/nvim
+
+volumes:
+  lazyvim-share:
+  lazyvim-state:
+  lazyvim-cache:
