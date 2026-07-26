@@ -3,7 +3,7 @@ FROM ubuntu:24.04
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PATH="/root/.local/bin:${PATH}"
 
-# 必要な基本パッケージおよびLazyVimの依存関係（ripgrep, fd, build-essential等）をインストール
+# 必要な基本パッケージおよびLazyVimの依存関係をインストール
 RUN apt-get update && apt-get install -y \
   curl \
   git \
@@ -21,11 +21,17 @@ RUN apt-get update && apt-get install -y \
 # fdfindをfdとして使えるようにシンボリックリンクを作成
 RUN ln -s /usr/bin/fdfind /usr/bin/fd
 
-# 最新版のNeovim（Tarball）をセットアップ
-RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz \
-  && tar -C /opt -xzf nvim-linux-x86_64.tar.gz \
-  && rm nvim-linux-x86_64.tar.gz
-ENV PATH="/opt/nvim-linux-x86_64/bin:${PATH}"
+# CPUアーキテクチャ（x86_64 / arm64）に合わせて最適なNeovimをセットアップ
+RUN ARCH=$(uname -m) && \
+  if [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then \
+    NVIM_ARCH="arm64"; \
+  else \
+    NVIM_ARCH="x86_64"; \
+  fi && \
+  curl -LO "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-${NVIM_ARCH}.tar.gz" && \
+  tar -C /opt -xzf "nvim-linux-${NVIM_ARCH}.tar.gz" && \
+  rm "nvim-linux-${NVIM_ARCH}.tar.gz" && \
+  ln -s "/opt/nvim-linux-${NVIM_ARCH}/bin/nvim" /usr/local/bin/nvim
 
 # LazyVim Starterをクローン
 RUN git clone https://github.com/LazyVim/starter /root/.config/nvim \
@@ -34,7 +40,7 @@ RUN git clone https://github.com/LazyVim/starter /root/.config/nvim \
 # ローカルのカスタム設定（luaディレクトリ）をイメージ内にコピー
 COPY lua /root/.config/nvim/lua
 
-# プラグインの初期インストールを完全同期（Mason等の事前準備含む）
+# プラグインの初期インストールを同期
 RUN nvim --headless "+Lazy! sync" +qa
 
 # 作業ディレクトリの設定
