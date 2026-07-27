@@ -175,6 +175,8 @@ lvim() {
 
   # 親ディレクトリにマウントしてコンテナを起動
   docker run --rm -it \
+    -v /mnt/c:/mnt/c \
+    -e PATH="$PATH:/mnt/c/Windows/System32:/mnt/c/Windows/System32/WindowsPowerShell/v1.0" \
     -v "$target_dir:/workspace" \
     -v lazyvim-share:/root/.local/share/nvim \
     -v lazyvim-state:/root/.local/state/nvim \
