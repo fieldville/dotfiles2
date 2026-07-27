@@ -1,6 +1,6 @@
 ## docker
-alias dco='docker-compose'
-alias dc='docker-compose'
+alias dco='docker compose'
+alias dc='docker compose'
 alias d='docker'
 # 'docker ps' displays the currently running containers
 #alias dps='docker ps'
@@ -12,18 +12,18 @@ alias dsa="docker container ls -q | awk '{print \$1}' | xargs -r -o docker stop"
 alias ds="docker images; docker ps -a"
 alias da="docker ps -a"
 
-# Start the docker-compose stack in the current directory
-alias dcu="docker-compose up -d"
-# Start the docker-compose stack in the current directory and rebuild the images
-alias dcub="docker-compose up -d --build"
-# Stop, delete (down) or restart the docker-compose stack in the current directory
-alias dcs="docker-compose stop"
-alias dcd="docker-compose down"
-alias dcr="docker-compose restart"
-# Show the logs for the docker-compose stack in the current directory
+# Start the docker compose stack in the current directory
+alias dcu="docker compose up -d"
+# Start the docker compose stack in the current directory and rebuild the images
+alias dcub="docker compose up -d --build"
+# Stop, delete (down) or restart the docker compose stack in the current directory
+alias dcs="docker compose stop"
+alias dcd="docker compose down"
+alias dcr="docker compose restart"
+# Show the logs for the docker compose stack in the current directory
 # May be extended with the service name to get service-specific logs, like
 # 'dcl php' to get the logs of the php container
-alias dcl="docker-compose logs"
+alias dcl="docker compose logs"
 # Quickly run the docker exec command like this: 'dex container-name bash'
 #alias dex="docker container exec -it"
 
@@ -59,7 +59,7 @@ alias dclean='docker contianer kill $(docker container ls --all --quiet); drm; d
 alias dprn='docker system prune'
 # List all aliases relating to docker
 dalias() { alias | grep 'docker' | sed "s/^\([^=]*\)='\(.*\)'/\1    => \2/"| sed "s/'\\\'//g"; }
-dcalias() { alias | grep 'docker-compose' | sed "s/^\([^=]*\)='\(.*\)'/\1    => \2/"| sed "s/'\\\'//g"; }
+dcalias() { alias | grep 'docker compose' | sed "s/^\([^=]*\)='\(.*\)'/\1    => \2/"| sed "s/'\\\'//g"; }
 
 alias dcnt='docker container'
 alias dimg='docker image'
