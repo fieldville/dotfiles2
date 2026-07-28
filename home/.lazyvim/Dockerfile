@@ -100,6 +100,9 @@ COPY lua /root/.config/nvim/lua
 # プラグインの初期インストールを同期
 RUN nvim --headless "+Lazy! sync" +qa
 
+# Gitに任意のディレクトリを信頼させる設定を追加
+RUN git config --global --add safe.directory "*"
+
 # 作業ディレクトリの設定
 WORKDIR /workspace
 
