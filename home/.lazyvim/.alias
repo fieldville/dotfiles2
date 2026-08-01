@@ -28,6 +28,7 @@ lvim() {
 
   # 親ディレクトリにマウントしてコンテナを起動
   docker run --rm -it \
+    --add-host host.docker.internal:host-gateway \
     -v "$target_dir:/workspace" \
     -v lazyvim-share:/root/.local/share/nvim \
     -v lazyvim-state:/root/.local/state/nvim \
@@ -35,3 +36,6 @@ lvim() {
     -w /workspace \
     lazyvim-sandbox nvim $file_name
 }
+
+# WSL2/Docker用 クリップボードブリッジ常駐
+pgrep -f "TCP-LISTEN:2489" >/dev/null || (socat -u TCP-LISTEN:2489,fork,reuseaddr EXEC:"/mnt/c/Windows/System32/win32yank.exe -i --crlf" 2>/dev/null &)

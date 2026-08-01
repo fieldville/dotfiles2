@@ -65,5 +65,6 @@ export PATH=~/.local/bin:$PATH
 [ -f ~/.falias ] && source ~/.falias
 [ -f ~/.kalias ] && source ~/.kalias
 [ -f ~/.dalias ] && source ~/.dalias
+[ -f ~/.lazyvim/.alias ] && . ~/.lazyvim/.alias
 
 [ -r ~/.byobu/prompt ] && . ~/.byobu/prompt #byobu-prompt#

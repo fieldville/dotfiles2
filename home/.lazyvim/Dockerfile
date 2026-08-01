@@ -39,8 +39,7 @@ RUN apt-get update && apt-get install -y \
   luarocks \
   ruby \
   ruby-dev \
-  xclip \
-  wl-clipboard \
+  netcat-openbsd \
   && rm -rf /var/lib/apt/lists/*
 
 # fdfindをfdとして使えるようにシンボリックリンクを作成
