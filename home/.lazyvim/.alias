@@ -1,5 +1,29 @@
 lvim() {
-  local target="${1:-.}"
+  local extra_opts=()
+  local target=""
+
+  # 引数を解析して、オプション（-R, -d など）とターゲットパスを分離する
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      -*)
+        extra_opts+=("$1")
+        shift
+        ;;
+      *)
+        if [ -z "$target" ]; then
+          target="$1"
+        else
+          # 2つ目以降のファイル指定（vimdiffなどで複数ファイル指定する場合）
+          extra_opts+=("$1")
+        fi
+        shift
+        ;;
+    esac
+  done
+
+  # ターゲット指定がなければカレントディレクトリ
+  target="${target:-.}"
+
   local target_dir
   local file_name=""
 
@@ -26,6 +50,11 @@ lvim() {
     fi
   fi
 
+  # オプションとファイル名を組み合わせて nvim に渡す
+  local nvim_args=()
+  [ -n "$file_name" ] && nvim_args+=("$file_name")
+  nvim_args+=("${extra_opts[@]}")
+
   # 親ディレクトリにマウントしてコンテナを起動
   docker run --rm -it \
     --add-host host.docker.internal:host-gateway \
@@ -34,8 +63,12 @@ lvim() {
     -v lazyvim-state:/root/.local/state/nvim \
     -v lazyvim-cache:/root/.cache/nvim \
     -w /workspace \
-    lazyvim-sandbox nvim $file_name
+    lazyvim-sandbox nvim "${nvim_args[@]}"
 }
 
 # WSL2/Docker用 クリップボードブリッジ常駐
 pgrep -f "TCP-LISTEN:2489" >/dev/null || (socat -u TCP-LISTEN:2489,fork,reuseaddr EXEC:"/mnt/c/Windows/System32/win32yank.exe -i --crlf" 2>/dev/null &)
+
+alias vi=lvim
+alias view='lvim -R'
+alias vimdiff='lvim -d'
