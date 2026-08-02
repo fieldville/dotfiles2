@@ -69,8 +69,10 @@ lvim() {
 # クリップボードブリッジを起動
 if [[ "$OSTYPE" == "darwin"* ]]; then
   pgrep -f "TCP-LISTEN:2489" >/dev/null || (socat -u TCP-LISTEN:2489,fork,reuseaddr EXEC:"pbcopy" 2>/dev/null &)
-elif grep -q Microsoft /proc/version 2>/dev/null; then
+  pgrep -f "TCP-LISTEN:2490" >/dev/null || (socat TCP-LISTEN:2490,fork,reuseaddr EXEC:"pbpaste" 2>/dev/null &)
+elif grep -qi -e "microsoft" -e "wsl" /proc/version 2>/dev/null; then
   pgrep -f "TCP-LISTEN:2489" >/dev/null || (socat -u TCP-LISTEN:2489,fork,reuseaddr EXEC:"/mnt/c/Windows/System32/win32yank.exe -i --crlf" 2>/dev/null &)
+  pgrep -f "TCP-LISTEN:2490" >/dev/null || (socat TCP-LISTEN:2490,fork,reuseaddr EXEC:"/mnt/c/Windows/System32/win32yank.exe -o --lf" 2>/dev/null &)
 fi
 
 alias vi=lvim

@@ -3,6 +3,8 @@ services:
     build: .
     image: lazyvim-sandbox
     container_name: lazyvim-container
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     stdin_open: true
     tty: true
     volumes:
