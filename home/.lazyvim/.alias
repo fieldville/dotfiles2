@@ -66,8 +66,12 @@ lvim() {
     lazyvim-sandbox nvim "${nvim_args[@]}"
 }
 
-# WSL2/Docker用 クリップボードブリッジ常駐
-pgrep -f "TCP-LISTEN:2489" >/dev/null || (socat -u TCP-LISTEN:2489,fork,reuseaddr EXEC:"/mnt/c/Windows/System32/win32yank.exe -i --crlf" 2>/dev/null &)
+# クリップボードブリッジを起動
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  pgrep -f "TCP-LISTEN:2489" >/dev/null || (socat -u TCP-LISTEN:2489,fork,reuseaddr EXEC:"pbcopy" 2>/dev/null &)
+elif grep -q Microsoft /proc/version 2>/dev/null; then
+  pgrep -f "TCP-LISTEN:2489" >/dev/null || (socat -u TCP-LISTEN:2489,fork,reuseaddr EXEC:"/mnt/c/Windows/System32/win32yank.exe -i --crlf" 2>/dev/null &)
+fi
 
 alias vi=lvim
 alias view='lvim -R'

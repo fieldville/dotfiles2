@@ -4,14 +4,14 @@ vim.opt.relativenumber = false
 vim.opt.clipboard = ""
 
 vim.g.clipboard = {
-  name = "socat-bridge",
-  copy = {
-    ["+"] = "nc -w 1 host.docker.internal 2489",
-    ["*"] = "nc -w 1 host.docker.internal 2489",
-  },
-  paste = {
-    ["+"] = "true",
-    ["*"] = "true",
-  },
-  cache_enabled = 1,
+	name = "socat-bridge",
+	copy = {
+		["+"] = "nc -w 1 host.docker.internal 2489",
+		["*"] = "nc -w 1 host.docker.internal 2489",
+	},
+	paste = {
+		["+"] = "true",
+		["*"] = "true",
+	},
+	cache_enabled = 1,
 }
