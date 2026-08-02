@@ -5,7 +5,6 @@ export HISTCONTROL=ignoredups:erasedups
 # Append to the history file, don't overwrite it.
 shopt -s histappend
 
-#export PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
 export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 # History size up
@@ -34,33 +33,17 @@ EDITOR=vim; export EDITOR
 export PATH=/usr/local/bin:$PATH
 export PATH=/sbin:/usr/sbin:$PATH
 
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-if [ -f ~/.alias ]; then
-    . ~/.alias
-fi
-if [ -f ~/.alias.private ]; then
-    . ~/.alias.private
-fi
-
 export LESS="iSMR"
-#set -o vi
 bind 'set horizontal-scroll-mode off'
-
-# disable because error occured when start GUI
-#stty werase undef
-bind '"\C-w": unix-filename-rubout'
-
-#[[ -z "$TMUX" && -z "$WINDOW" && ! -z "$PS1" ]] && tmux
-
-. /usr/share/autojump/autojump.sh
 
 # Append /usr/local/bin to the path.
 export PATH=/usr/local/bin:$PATH
 export PATH=/sbin:/usr/sbin:$PATH
 export PATH=~/.local/bin:$PATH
 
+[ -f ~/.bash_aliases ] && . ~/.bash_aliases
+[ -f ~/.alias ] && . ~/.alias
+[ -f ~/.alias.private ] && . ~/.alias.private
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 [ -f ~/.falias ] && source ~/.falias
 [ -f ~/.kalias ] && source ~/.kalias
