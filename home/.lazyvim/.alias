@@ -1,8 +1,10 @@
 lvim() {
   local extra_opts=()
-  local target=""
+  local file_args=()
+  local mount_opts=()
+  local target_paths=()
 
-  # 引数を解析して、オプションとターゲットパスを分離
+  # 引数をオプションとファイルパスに分離
   while [ $# -gt 0 ]; do
     case "$1" in
       -*)
@@ -10,59 +12,82 @@ lvim() {
         shift
         ;;
       *)
-        if [ -z "$target" ]; then
-          target="$1"
-        else
-          extra_opts+=("$1")
-        fi
+        target_paths+=("$1")
         shift
         ;;
     esac
   done
 
-  target="${target:-.}"
-
-  # readlink -f でシンボリックリンクを追跡して実体パスを取得
-  # (リンク先が存在しない新規作成ファイルの場合は元のパスを保持)
-  local real_target
-  real_target="$(readlink -f "$target" 2>/dev/null || echo "$target")"
-
-  local target_dir
-  local file_name=""
-
-  if [ -e "$real_target" ]; then
-    if [ -d "$real_target" ]; then
-      target_dir="$(cd "$real_target" && pwd)"
-    else
-      target_dir="$(cd "$(dirname "$real_target")" && pwd)"
-      file_name="$(basename "$real_target")"
-    fi
-  else
-    local parent_dir
-    parent_dir="$(dirname "$real_target")"
-    if [ -d "$parent_dir" ]; then
-      target_dir="$(cd "$parent_dir" && pwd)"
-      file_name="$(basename "$real_target")"
-    else
-      echo "エラー: ディレクトリ '$parent_dir' が存在しません。" >&2
-      return 1
-    fi
+  # 引数がない場合はカレントディレクトリを開く
+  if [ ${#target_paths[@]} -eq 0 ]; then
+    target_paths+=(".")
   fi
 
-  local nvim_args=()
-  [ -n "$file_name" ] && nvim_args+=("$file_name")
-  nvim_args+=("${extra_opts[@]}")
+  # マウント先の衝突を防ぐためのカウンター
+  local mount_idx=0
+  local working_dir="/workspace"
 
+  # 各ファイルを解析して個別マウントを設定
+  for path in "${target_paths[@]}"; do
+    local real_path
+    real_path="$(readlink -f "$path" 2>/dev/null || echo "$path")"
+
+    local file_dir
+    local file_name=""
+
+    if [ -e "$real_path" ]; then
+      if [ -d "$real_path" ]; then
+        file_dir="$(cd "$real_path" && pwd)"
+      else
+        file_dir="$(cd "$(dirname "$real_path")" && pwd)"
+        file_name="$(basename "$real_path")"
+      fi
+    else
+      local parent_dir
+      parent_dir="$(dirname "$real_path")"
+      if [ -d "$parent_dir" ]; then
+        file_dir="$(cd "$parent_dir" && pwd)"
+        file_name="$(basename "$real_path")"
+      else
+        echo "エラー: ディレクトリ '$parent_dir' が存在しません。" >&2
+        return 1
+      fi
+    fi
+
+    if [ $mount_idx -eq 0 ]; then
+      # 最初のファイルがあるディレクトリをデフォルトの作業ディレクトリ (/workspace) にマウント
+      mount_opts+=("-v" "$file_dir:/workspace")
+      if [ -n "$file_name" ]; then
+        file_args+=("$file_name")
+      else
+        file_args+=(".")
+      fi
+      working_dir="/workspace"
+    else
+      # 2つ目以降で異なるディレクトリにある場合は /mnt_1, /mnt_2 ... としてマウント
+      local mnt_point="/mnt_$mount_idx"
+      mount_opts+=("-v" "$file_dir:$mnt_point")
+      if [ -n "$file_name" ]; then
+        file_args+=("$mnt_point/$file_name")
+      else
+        file_args+=("$mnt_point")
+      fi
+    fi
+
+    ((mount_idx++))
+  done
+
+  # コンテナの起動
   docker run --rm -it \
     -u "$(id -u):$(id -g)" \
     --add-host host.docker.internal:host-gateway \
-    -v "$target_dir:/workspace" \
+    "${mount_opts[@]}" \
     -v lazyvim-share:/home/ubuntu/.local/share/nvim \
     -v lazyvim-state:/home/ubuntu/.local/state/nvim \
     -v lazyvim-cache:/home/ubuntu/.cache/nvim \
     -v /tmp:/tmp \
-    -w /workspace \
-    lazyvim-sandbox nvim "${nvim_args[@]}"
+    -w "$working_dir" \
+    lazyvim-sandbox nvim "${extra_opts[@]}" "${file_args[@]}"
 }
 
 # LazyVim Dockerイメージの再ビルド用関数
