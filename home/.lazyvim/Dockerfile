@@ -1,5 +1,10 @@
 FROM ubuntu:24.04
 
+# ビルド引数の定義（デフォルト 1000）
+ARG USERNAME=ubuntu
+ARG USER_UID=1000
+ARG USER_GID=1000
+
 ENV DEBIAN_FRONTEND=noninteractive
 
 # 1. 日本語ロケール（ja_JP.UTF-8）の生成と環境変数の設定
@@ -40,7 +45,21 @@ RUN apt-get update && apt-get install -y \
   ruby \
   ruby-dev \
   netcat-openbsd \
+  sudo \
   && rm -rf /var/lib/apt/lists/*
+
+# ユーザーとグループの作成
+RUN if ! getent group $USER_GID >/dev/null 2>&1; then \
+        groupadd --gid $USER_GID $USERNAME; \
+    fi && \
+    if ! getent passwd $USER_UID >/dev/null 2>&1; then \
+        useradd --uid $USER_UID --gid $USER_GID -m $USERNAME; \
+    else \
+        # 既存ユーザー（ubuntu等）が存在する場合、そのユーザー名を取得してUSERNAMEを更新
+        USERNAME=$(getent passwd $USER_UID | cut -d: -f1); \
+    fi && \
+    echo "$USERNAME ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME && \
+    chmod 0440 /etc/sudoers.d/$USERNAME
 
 # fdfindをfdとして使えるようにシンボリックリンクを作成
 RUN ln -s /usr/bin/fdfind /usr/bin/fd
@@ -89,21 +108,25 @@ RUN FZF_VERSION=$(curl -s "https://api.github.com/repos/junegunn/fzf/releases/la
   install fzf /usr/local/bin && \
   rm fzf fzf.tar.gz
 
-# LazyVim Starterをクローン
-RUN git clone https://github.com/LazyVim/starter /root/.config/nvim \
-  && rm -rf /root/.config/nvim/.git
+# 作成（または既存の）一般ユーザーに切り替え
+USER $USER_UID
+WORKDIR /workspace
 
-# ローカルのカスタム設定（luaディレクトリ）をイメージ内にコピー
-COPY lua /root/.config/nvim/lua
+# PATH の設定（一般ユーザー用）
+ENV PATH="/home/ubuntu/.local/bin:/home/ubuntu/.cargo/bin:${PATH}"
+
+# LazyVim Starterを一般ユーザーのホームディレクトリにクローン
+RUN git clone https://github.com/LazyVim/starter ~/.config/nvim \
+  && rm -rf ~/.config/nvim/.git
+
+# ローカルのカスタム設定（luaディレクトリ）をコピー
+COPY --chown=$USER_UID:$USER_GID lua ~/.config/nvim/lua
 
 # プラグインの初期インストールを同期
 RUN nvim --headless "+Lazy! sync" +qa
 
 # Gitに任意のディレクトリを信頼させる設定を追加
 RUN git config --global --add safe.directory "*"
-
-# 作業ディレクトリの設定
-WORKDIR /workspace
 
 # Neovimを起動
 CMD ["nvim"]

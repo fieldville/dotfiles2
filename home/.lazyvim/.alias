@@ -57,13 +57,32 @@ lvim() {
 
   # 親ディレクトリにマウントしてコンテナを起動
   docker run --rm -it \
+    -u "$(id -u):$(id -g)" \
     --add-host host.docker.internal:host-gateway \
     -v "$target_dir:/workspace" \
-    -v lazyvim-share:/root/.local/share/nvim \
-    -v lazyvim-state:/root/.local/state/nvim \
-    -v lazyvim-cache:/root/.cache/nvim \
+    -v lazyvim-share:/home/ubuntu/.local/share/nvim \
+    -v lazyvim-state:/home/ubuntu/.local/state/nvim \
+    -v lazyvim-cache:/home/ubuntu/.cache/nvim \
+    -v /tmp:/tmp \
     -w /workspace \
     lazyvim-sandbox nvim "${nvim_args[@]}"
+}
+
+# LazyVim Dockerイメージの再ビルド用関数
+lvim-build() {
+  local script_dir
+  # この .alias ファイルが存在するディレクトリ（または Dockerfile のあるパス）を指定
+  script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+  echo "Building lazyvim-sandbox with UID=$(id -u) GID=$(id -g)..."
+
+  # --no-cache オプションを渡せるようにする（例: lvim-build --no-cache）
+  docker build \
+    --build-arg USER_UID="$(id -u)" \
+    --build-arg USER_GID="$(id -g)" \
+    "$@" \
+    -t lazyvim-sandbox \
+    "$script_dir"
 }
 
 # クリップボードブリッジを起動
