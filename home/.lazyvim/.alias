@@ -2,7 +2,7 @@ lvim() {
   local extra_opts=()
   local target=""
 
-  # 引数を解析して、オプション（-R, -d など）とターゲットパスを分離する
+  # 引数を解析して、オプションとターゲットパスを分離
   while [ $# -gt 0 ]; do
     case "$1" in
       -*)
@@ -13,7 +13,6 @@ lvim() {
         if [ -z "$target" ]; then
           target="$1"
         else
-          # 2つ目以降のファイル指定（vimdiffなどで複数ファイル指定する場合）
           extra_opts+=("$1")
         fi
         shift
@@ -21,41 +20,39 @@ lvim() {
     esac
   done
 
-  # ターゲット指定がなければカレントディレクトリ
   target="${target:-.}"
+
+  # readlink -f でシンボリックリンクを追跡して実体パスを取得
+  # (リンク先が存在しない新規作成ファイルの場合は元のパスを保持)
+  local real_target
+  real_target="$(readlink -f "$target" 2>/dev/null || echo "$target")"
 
   local target_dir
   local file_name=""
 
-  # 指定されたパスが存在するかチェック
-  if [ -e "$target" ]; then
-    if [ -d "$target" ]; then
-      # ディレクトリが指定された場合
-      target_dir="$(cd "$target" && pwd)"
+  if [ -e "$real_target" ]; then
+    if [ -d "$real_target" ]; then
+      target_dir="$(cd "$real_target" && pwd)"
     else
-      # ファイルが指定された場合
-      target_dir="$(cd "$(dirname "$target")" && pwd)"
-      file_name="$(basename "$target")"
+      target_dir="$(cd "$(dirname "$real_target")" && pwd)"
+      file_name="$(basename "$real_target")"
     fi
   else
-    # 新規ファイルなど、まだ存在しないパスが渡された場合
     local parent_dir
-    parent_dir="$(dirname "$target")"
+    parent_dir="$(dirname "$real_target")"
     if [ -d "$parent_dir" ]; then
       target_dir="$(cd "$parent_dir" && pwd)"
-      file_name="$(basename "$target")"
+      file_name="$(basename "$real_target")"
     else
       echo "エラー: ディレクトリ '$parent_dir' が存在しません。" >&2
       return 1
     fi
   fi
 
-  # オプションとファイル名を組み合わせて nvim に渡す
   local nvim_args=()
   [ -n "$file_name" ] && nvim_args+=("$file_name")
   nvim_args+=("${extra_opts[@]}")
 
-  # 親ディレクトリにマウントしてコンテナを起動
   docker run --rm -it \
     -u "$(id -u):$(id -g)" \
     --add-host host.docker.internal:host-gateway \
