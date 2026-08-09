@@ -119,8 +119,8 @@ ENV PATH="/home/ubuntu/.local/bin:/home/ubuntu/.cargo/bin:${PATH}"
 RUN git clone https://github.com/LazyVim/starter ~/.config/nvim \
   && rm -rf ~/.config/nvim/.git
 
-# ローカルのカスタム設定（luaディレクトリ）をコピー
-COPY --chown=$USER_UID:$USER_GID lua ~/.config/nvim/lua
+# ビルドコンテキスト内のファイルを Neovim 設定ディレクトリへコピー
+COPY --chown=$USER_UID:$USER_GID . /home/ubuntu/.config/nvim/
 
 # プラグインの初期インストールを同期
 RUN nvim --headless "+Lazy! sync" +qa
