@@ -25,10 +25,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# Set your favorite editor here.
-VISUAL=vim; export VISUAL
-EDITOR=vim; export EDITOR
-
 # Append /usr/local/bin to the path.
 export PATH=/usr/local/bin:$PATH
 export PATH=/sbin:/usr/sbin:$PATH
@@ -51,3 +47,9 @@ export PATH=~/.local/bin:$PATH
 [ -f ~/.lazyvim/.alias ] && . ~/.lazyvim/.alias
 
 [ -r ~/.byobu/prompt ] && . ~/.byobu/prompt #byobu-prompt#
+
+# Set your favorite editor here.
+VISUAL=lvim
+export VISUAL
+EDITOR=lvim
+export EDITOR
