@@ -89,33 +89,33 @@ RUN ARCH=$(uname -m) && \
   else \
     NVIM_ARCH="x86_64"; \
   fi && \
-  curl -LO "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-${NVIM_ARCH}.tar.gz" && \
+  curl -fsSLO "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-${NVIM_ARCH}.tar.gz" && \
   tar -C /opt -xzf "nvim-linux-${NVIM_ARCH}.tar.gz" && \
   rm "nvim-linux-${NVIM_ARCH}.tar.gz" && \
   ln -s "/opt/nvim-linux-${NVIM_ARCH}/bin/nvim" /usr/local/bin/nvim
 
 # lazygit のインストール
-RUN LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*') && \
+RUN LAZYGIT_VERSION=$(curl -fsS "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*') && \
   ARCH=$(uname -m) && \
   if [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then \
     LG_ARCH="arm64"; \
   else \
     LG_ARCH="x86_64"; \
   fi && \
-  curl -sLo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_${LG_ARCH}.tar.gz" && \
+  curl -fsSLo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_${LG_ARCH}.tar.gz" && \
   tar -xf lazygit.tar.gz lazygit && \
   install lazygit /usr/local/bin && \
   rm lazygit lazygit.tar.gz
 
 # fzf の最新版インストール
-RUN FZF_VERSION=$(curl -s "https://api.github.com/repos/junegunn/fzf/releases/latest" | grep -Po '"tag_name": "v?\K[^"]*') && \
+RUN FZF_VERSION=$(curl -fsS "https://api.github.com/repos/junegunn/fzf/releases/latest" | grep -Po '"tag_name": "v?\K[^"]*') && \
   ARCH=$(uname -m) && \
   if [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then \
     FZF_ARCH="arm64"; \
   else \
     FZF_ARCH="amd64"; \
   fi && \
-  curl -sLo fzf.tar.gz "https://github.com/junegunn/fzf/releases/download/v${FZF_VERSION}/fzf-${FZF_VERSION}-linux_${FZF_ARCH}.tar.gz" && \
+  curl -fsSLo fzf.tar.gz "https://github.com/junegunn/fzf/releases/download/v${FZF_VERSION}/fzf-${FZF_VERSION}-linux_${FZF_ARCH}.tar.gz" && \
   tar -xf fzf.tar.gz fzf && \
   install fzf /usr/local/bin && \
   rm fzf fzf.tar.gz
