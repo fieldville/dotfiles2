@@ -48,18 +48,30 @@ RUN apt-get update && apt-get install -y \
   sudo \
   && rm -rf /var/lib/apt/lists/*
 
-# ユーザーとグループの作成
-RUN if ! getent group $USER_GID >/dev/null 2>&1; then \
-        groupadd --gid $USER_GID $USERNAME; \
-    fi && \
-    if ! getent passwd $USER_UID >/dev/null 2>&1; then \
-        useradd --uid $USER_UID --gid $USER_GID -m $USERNAME; \
+# ユーザーとグループをホストの UID/GID に合わせる
+# ubuntu:24.04 には既定で uid=1000 の ubuntu ユーザーが存在するため、
+# 新規作成ではなく既存ユーザーを目的の UID/GID へ付け替える
+RUN set -eux; \
+    # 目的の GID のグループを用意（無ければ作成） \
+    if ! getent group "$USER_GID" >/dev/null 2>&1; then \
+        groupadd --gid "$USER_GID" appgroup; \
+    fi; \
+    if getent passwd ubuntu >/dev/null 2>&1; then \
+        # 既存 ubuntu ユーザーの UID を変更（目的 UID が他ユーザーに使われていれば解放） \
+        if [ "$(id -u ubuntu)" != "$USER_UID" ]; then \
+            existing_user="$(getent passwd "$USER_UID" | cut -d: -f1 || true)"; \
+            if [ -n "$existing_user" ] && [ "$existing_user" != "ubuntu" ]; then \
+                userdel "$existing_user"; \
+            fi; \
+            usermod --uid "$USER_UID" ubuntu; \
+        fi; \
+        usermod --gid "$USER_GID" ubuntu; \
     else \
-        # 既存ユーザー（ubuntu等）が存在する場合、そのユーザー名を取得してUSERNAMEを更新
-        USERNAME=$(getent passwd $USER_UID | cut -d: -f1); \
-    fi && \
-    echo "$USERNAME ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME && \
-    chmod 0440 /etc/sudoers.d/$USERNAME
+        useradd --uid "$USER_UID" --gid "$USER_GID" -m ubuntu; \
+    fi; \
+    echo "ubuntu ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/ubuntu; \
+    chmod 0440 /etc/sudoers.d/ubuntu; \
+    chown -R "$USER_UID:$USER_GID" /home/ubuntu
 
 # fdfindをfdとして使えるようにシンボリックリンクを作成
 RUN ln -s /usr/bin/fdfind /usr/bin/fd
@@ -127,6 +139,13 @@ RUN nvim --headless "+Lazy! sync" +qa
 
 # Gitに任意のディレクトリを信頼させる設定を追加
 RUN git config --global --add safe.directory "*"
+
+# docker run -u で任意の UID (ホストのユーザー) として起動されても
+# $HOME (/home/ubuntu) 配下の nvim データ/状態/キャッシュに書き込めるよう権限を開放
+RUN mkdir -p /home/ubuntu/.local/share/nvim \
+             /home/ubuntu/.local/state/nvim \
+             /home/ubuntu/.cache/nvim \
+  && chmod -R 777 /home/ubuntu
 
 # Neovimを起動
 CMD ["nvim"]

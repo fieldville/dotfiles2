@@ -80,6 +80,7 @@ done
 # コンテナの起動
 exec docker run --rm -it \
   -u "$(id -u):$(id -g)" \
+  -e HOME=/home/ubuntu \
   --add-host host.docker.internal:host-gateway \
   "${mount_opts[@]}" \
   -v lazyvim-share:/home/ubuntu/.local/share/nvim \
