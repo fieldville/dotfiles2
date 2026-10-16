@@ -54,3 +54,8 @@ VISUAL=lvim
 export VISUAL
 EDITOR=lvim
 export EDITOR
+
+# starship prompt (keep LAST so it overrides byobu's PS1 above)
+if [[ $- == *i* ]] && command -v starship >/dev/null 2>&1; then
+  eval "$(starship init bash)"
+fi
