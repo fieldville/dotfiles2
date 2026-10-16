@@ -36,7 +36,7 @@ export PATH=~/.local/bin:$PATH
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
 [ -f ~/.alias ] && . ~/.alias
 [ -f ~/.alias.private ] && . ~/.alias.private
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+command -v fzf >/dev/null 2>&1 && eval "$(fzf --bash)"
 [ -f /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh
 [ -f ~/.falias ] && source ~/.falias
 [ -f ~/.kalias ] && source ~/.kalias
