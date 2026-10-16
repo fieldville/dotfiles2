@@ -41,6 +41,7 @@ export PATH=~/.local/bin:$PATH
 [ -f ~/.alias ] && . ~/.alias
 [ -f ~/.alias.private ] && . ~/.alias.private
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -f /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh
 [ -f ~/.falias ] && source ~/.falias
 [ -f ~/.kalias ] && source ~/.kalias
 [ -f ~/.dalias ] && source ~/.dalias
