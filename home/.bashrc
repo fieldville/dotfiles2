@@ -25,14 +25,10 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# Append /usr/local/bin to the path.
-export PATH=/usr/local/bin:$PATH
-export PATH=/sbin:/usr/sbin:$PATH
-
 export LESS="iSMR"
 bind 'set horizontal-scroll-mode off'
 
-# Append /usr/local/bin to the path.
+# Prepend extra bin dirs to PATH.
 export PATH=/usr/local/bin:$PATH
 export PATH=/sbin:/usr/sbin:$PATH
 export PATH=~/.local/bin:$PATH
