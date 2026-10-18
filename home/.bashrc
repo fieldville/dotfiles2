@@ -41,14 +41,14 @@ command -v fzf >/dev/null 2>&1 && eval "$(fzf --bash)"
 [ -f ~/.falias ] && source ~/.falias
 [ -f ~/.kalias ] && source ~/.kalias
 [ -f ~/.dalias ] && source ~/.dalias
-[ -f ~/.lazyvim/.alias ] && . ~/.lazyvim/.alias
+[ -f ~/.fieldville/nvim/docker/alias.sh ] && . ~/.fieldville/nvim/docker/alias.sh
 
 [ -r ~/.byobu/prompt ] && . ~/.byobu/prompt #byobu-prompt#
 
 # Set your favorite editor here.
-VISUAL=lvim
+VISUAL=nvim
 export VISUAL
-EDITOR=lvim
+EDITOR=nvim
 export EDITOR
 
 # starship prompt (keep LAST so it overrides byobu's PS1 above)
