@@ -55,3 +55,8 @@ export EDITOR
 if [[ $- == *i* ]] && command -v starship >/dev/null 2>&1; then
   eval "$(starship init bash)"
 fi
+
+# --- added on Ubuntu 26.04 migration
+[ -f ~/.cargo/env ] && . ~/.cargo/env
+export PATH="$HOME/.local/share/fnm:$PATH"
+command -v fnm >/dev/null && eval "$(fnm env --use-on-cd --shell bash)"

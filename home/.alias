@@ -108,15 +108,15 @@ fi
 alias fdh="fd --no-ignore-vcs -H -E '.git/'"
 alias rgh="rg -."
 
-alias emacs="emacs -nw"
-alias e="emacs"
+# alias emacs="emacs -nw"  # disabled: emacs not installed on 26.04
+# alias e="emacs"  # disabled: emacs not installed on 26.04
 
 alias vi=nvim
 alias view='nvim -R'
 alias vimdiff='nvim -d'
 
-alias cie='conda info -e'
-alias cee='conda env export'
+# alias cie='conda info -e'  # disabled: conda not installed on 26.04
+# alias cee='conda env export'  # disabled: conda not installed on 26.04
 
 alias lg='lazygit'
 
