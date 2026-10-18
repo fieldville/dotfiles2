@@ -13,11 +13,15 @@ set completion-ignore-case on
 #
 "\e[A": history-search-backward
 Control-p: history-search-backward
+"\M-p": history-search-backward
+"\ep": history-search-backward
 
 # historical forward search with linehead string binded to down-key
 #
 "\e[B": history-search-forward
 Control-n: history-search-forward
+"\M-n": history-search-forward
+"\en": history-search-forward
 
 $if mode=vi
   set keymap vi-insert

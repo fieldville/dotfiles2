@@ -55,7 +55,7 @@ alias drm='docker container rm $(docker container ls --all --quiet)'
 alias drmi='docker image rm $(docker image ls -q)'
 # Remove all containers and images by force
 #alias dclean='docker kill $(docker ps --all --quiet); drm; drmi;'
-alias dclean='docker contianer kill $(docker container ls --all --quiet); drm; drmi;'
+alias dclean='docker container kill $(docker container ls --all --quiet); drm; drmi;'
 alias dprn='docker system prune'
 # List all aliases relating to docker
 dalias() { alias | grep 'docker' | sed "s/^\([^=]*\)='\(.*\)'/\1    => \2/"| sed "s/'\\\'//g"; }

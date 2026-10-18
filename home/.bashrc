@@ -37,7 +37,7 @@ export PATH=~/.local/bin:$PATH
 [ -f ~/.alias ] && . ~/.alias
 [ -f ~/.alias.private ] && . ~/.alias.private
 command -v fzf >/dev/null 2>&1 && eval "$(fzf --bash)"
-[ -f /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh
+command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init bash --cmd j)"
 [ -f ~/.falias ] && source ~/.falias
 [ -f ~/.kalias ] && source ~/.kalias
 [ -f ~/.dalias ] && source ~/.dalias

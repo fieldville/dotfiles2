@@ -7,23 +7,7 @@ alias cdwork_ios='cd ~/Documents/00_Work/iOS'
 alias cdwork='cd ~/Documents/00_Work'
 alias cdworkspace='cd ~/Documents/00_Work/workspace'
 
-[[ -f /usr/local/etc/profile.d/colorsvn-env.sh ]] && . /usr/local/etc/profile.d/colorsvn-env.sh
-#[[ -f ~/perl5/perlbrew/etc/bashrc ]] && . ~/perl5/perlbrew/etc/bashrc
-
-export TOMCAT_HOME=/usr/local/opt/tomcat/libexec
-export GROOVY_HOME=/usr/local/opt/groovy/libexec
-export ANDROID_SDK_ROOT=/usr/local/opt/android-sdk
-export CATALINA_OPTS="-server -Xmx256M -Xms128M -Xss256k -Djava.awt.headless=true"
-
-export VAGRANT_HOME=/Users/naoki_ichihara/Vagrant/.vagrant.d
-
-#[[ -s `brew --prefix`/etc/profile.d/z.sh ]] && . `brew --prefix`/etc/profile.d/z.sh
-
-export PATH=$ANDROID_SDK_ROOT/tools:$PATH
-export PATH=/usr/local/share/npm/bin:$PATH
 export PATH=~/tools:$PATH
-export PATH=/usr/local/etc/openssl/misc:$PATH
-export PATH=~/Library/Python/2.7/bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
 
 complete -C aws_completer aws
@@ -43,9 +27,6 @@ alias df='df -h'
 alias h='history'
 alias dmesg='dmesg -T'
 alias grep='grep -I --color --exclude-dir={.git,.svn,HTML} --exclude={\*.pyc\*}'
-# for CentOS
-alias vi='vim'
-alias view='vim -R'
 
 # aliases for git
 alias gcl='git clone'
@@ -101,8 +82,7 @@ alias grbi='git rebase -i'
 alias grbc='git rebase --continue'
 alias grba='git rebase --abort'
 alias gbr='git branch --remote'
-alias gcl='git config --list'
-alias gcp='git cherry-pick'
+alias gcfg='git config --list'
 alias glg='git log --stat --max-count=10'
 alias glgg='git log --graph --max-count=10'
 alias glgga='git log --graph --decorate --all'
@@ -116,7 +96,6 @@ alias grt='cd $(git rev-parse --show-cdup)'
 #alias pip='pip3'
 #alias pip='pip3.6'
 #alias python='python3'
-
 
 # also load inputrc
 if [[ $- =~ i ]]; then
