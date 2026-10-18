@@ -441,14 +441,6 @@ augroup perl_filetype
   autocmd! BufNewFile,BufRead *.tmpl setf tt2html
 augroup END
 "}}}
-" skelton {{{
-augroup SkeletonAu
-  autocmd!
-  for ext in ['pl', 'pm', 'rb', 't', 'html', 'css', 'js', 'vim', 'c', 'mk']
-    execute 'autocmd BufNewFile *.' . ext . ' 0r ~/.vim/skel/skel.' . ext
-  endfor
-augroup END
-"}}}
 " Map semicolon to colon {{{
 nnoremap ; :
 "}}}
