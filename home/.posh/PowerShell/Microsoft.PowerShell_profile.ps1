@@ -61,6 +61,13 @@ if (Get-Command starship -ErrorAction SilentlyContinue) {
   Invoke-Expression (&starship init powershell)
 }
 
+# tig: use home/.tigrc in this repo (vim-like g/G to first/last line, custom binds).
+# tig reads $TIGRC_USER instead of ~/.tigrc, so no symlink is needed; forward slashes keep
+# the MSYS2 build shipped alongside Git for Windows happy. A value already set elsewhere wins.
+if (-not $env:TIGRC_USER) {
+  $env:TIGRC_USER = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..\.tigrc')) -replace '\\', '/'
+}
+
 Set-Alias vi vim
 
 #if (Test-Path alias:rm) { del alias:rm -Force }
