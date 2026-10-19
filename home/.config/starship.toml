@@ -1,0 +1,7 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Give git (and other module commands) more headroom than the 500ms default.
+# On Windows, git_status right after `git pull` can exceed 500ms while git re-hashes
+# files through the git-lfs filter; Starship then kills git and git-lfs spams
+# "filter-process initialization failed ... The pipe is being closed" at every prompt.
+command_timeout = 2000

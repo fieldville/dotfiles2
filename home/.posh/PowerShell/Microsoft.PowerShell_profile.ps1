@@ -51,9 +51,13 @@ Set-PSReadLineKeyHandler -Chord 'Ctrl+x,Ctrl+e' -Function ViEditVisually
 #   winget install --id Starship.Starship
 # The default preset uses Nerd Font glyphs; install one and select it in the terminal, e.g.:
 #   winget install --id DEVCOM.JetBrainsMonoNerdFont
-# Config file: $env:USERPROFILE\.config\starship.toml (override with $env:STARSHIP_CONFIG).
+# Config: home/.config/starship.toml in this repo, pointed to via $env:STARSHIP_CONFIG so no
+# symlink into $env:USERPROFILE\.config is needed (a value already set elsewhere wins).
 # Skipped silently when starship is not installed yet, so a fresh machine still starts cleanly.
 if (Get-Command starship -ErrorAction SilentlyContinue) {
+  if (-not $env:STARSHIP_CONFIG) {
+    $env:STARSHIP_CONFIG = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..\.config\starship.toml'))
+  }
   Invoke-Expression (&starship init powershell)
 }
 
