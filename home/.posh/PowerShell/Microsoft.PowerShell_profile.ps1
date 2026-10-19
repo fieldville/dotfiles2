@@ -47,6 +47,16 @@ Set-PSReadLineKeyHandler -Chord 'Ctrl+x,Ctrl+e' -Function ViEditVisually
 #Set-PoshPrompt -Theme rudolfs-dark
 #Set-PoshPrompt -Theme honukai
 
+# Starship prompt (https://starship.rs/). Install via WinGet:
+#   winget install --id Starship.Starship
+# The default preset uses Nerd Font glyphs; install one and select it in the terminal, e.g.:
+#   winget install --id DEVCOM.JetBrainsMonoNerdFont
+# Config file: $env:USERPROFILE\.config\starship.toml (override with $env:STARSHIP_CONFIG).
+# Skipped silently when starship is not installed yet, so a fresh machine still starts cleanly.
+if (Get-Command starship -ErrorAction SilentlyContinue) {
+  Invoke-Expression (&starship init powershell)
+}
+
 Set-Alias g git
 Set-Alias vi vim
 
