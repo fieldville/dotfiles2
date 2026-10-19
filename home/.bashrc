@@ -26,7 +26,7 @@ if ! shopt -oq posix; then
 fi
 
 export LESS="iSMR"
-bind 'set horizontal-scroll-mode off'
+[[ $- == *i* ]] && bind 'set horizontal-scroll-mode off'
 
 # Prepend extra bin dirs to PATH.
 export PATH=/usr/local/bin:$PATH
