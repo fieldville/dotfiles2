@@ -1,6 +1,8 @@
 # tig の既定では main view の g/G が commit-title-graph のトグルなので、vim 風の gg / G に差し替える
 bind generic g move-first-line
 bind generic G move-last-line
+# main view には既定で bind main G :toggle commit-title-graph があり generic より優先されるので明示的に上書き
+bind main G move-last-line
 bind generic <Ctrl-G> :toggle commit-title-graph
 #set show-rev-graph = no
 bind generic L !git reflog
