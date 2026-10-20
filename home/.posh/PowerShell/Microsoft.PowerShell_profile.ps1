@@ -48,7 +48,6 @@ if ((Get-Command fzf -ErrorAction SilentlyContinue) -and (Get-Module -ListAvaila
   Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
 }
 
-#Import-Module ZLocation
 #Import-Module DockerCompletion
 #Import-Module posh-docker
 #Import-Module posh-git
