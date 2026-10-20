@@ -68,6 +68,31 @@ if (-not $env:TIGRC_USER) {
   $env:TIGRC_USER = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..\.tigrc')) -replace '\\', '/'
 }
 
+# tig binary: there is no winget/scoop package, but Git for Windows ships tig.exe (MSYS2 build)
+# in <git root>\usr\bin, which is deliberately NOT on PATH (it also holds find/sort/...).
+# Locate it through `git --exec-path` (<root>\{mingw64,ucrt64}\libexec\git-core) so this works
+# for both the scoop and the winget (C:\Program Files\Git) installs, and expose usr\bin only
+# for the duration of the tig process so the `!sh -c ...` binds in .tigrc work.
+# A tig already on PATH (e.g. Git Bash, or a hand-installed one) wins, nothing is shadowed then.
+if (-not (Get-Command tig -CommandType Application -ErrorAction SilentlyContinue)) {
+  function tig {
+    $execPath = git --exec-path 2>$null
+    if (-not $execPath) { Write-Error "tig: git not found"; return }
+    $gitRoot = Split-Path (Split-Path (Split-Path $execPath -Parent) -Parent) -Parent
+    $usrBin  = Join-Path $gitRoot 'usr\bin'
+    $exe     = Join-Path $usrBin 'tig.exe'
+    if (-not (Test-Path $exe)) { Write-Error "tig: not found at $exe (is Git for Windows installed?)"; return }
+
+    $oldPath = $env:PATH
+    try {
+      $env:PATH = "$usrBin;$env:PATH"
+      & $exe @args
+    } finally {
+      $env:PATH = $oldPath
+    }
+  }
+}
+
 Set-Alias vi vim
 
 #if (Test-Path alias:rm) { del alias:rm -Force }
