@@ -117,10 +117,14 @@ Set-Alias vi vim
 #if (Test-Path alias:rm) { del alias:rm -Force }
 #if (Test-Path alias:ls) { del alias:ls -Force }
 
-function l { dir $args }
-function ll { ls $args }
-#function ll { ls -ltrh $args }
-#function la { ls -ltrha $args }
+# ls / ll / la: `ls` stays the built-in alias for Get-ChildItem. ll/la mirror home/.alias
+# (ll='ls -ltrh', la='ll -A') in Get-ChildItem terms: `-ltr` = sort by mtime, newest last;
+# `-A` = -Force (hidden/system files; PowerShell never lists . and ..). Set-Alias cannot
+# carry arguments, so these have to be functions. There is no built-in equivalent of `-h`
+# (human-readable sizes); Length stays in bytes.
+function l { Get-ChildItem @args }
+function ll { Get-ChildItem @args | Sort-Object LastWriteTime }
+function la { Get-ChildItem -Force @args | Sort-Object LastWriteTime }
 
 function which ($command) {
   Get-command -Name $command -ShowCommandInfo | Format-List -Property Definition
