@@ -26,6 +26,9 @@ if ((Test-Path $PROFILE) -and (Select-String -Path $PROFILE -SimpleMatch $line -
 $tools = @(
   @{ Id = 'junegunn.fzf';        Cmd = 'fzf' }      # Ctrl+r / Ctrl+t via PSFzf, and `ji`
   @{ Id = 'ajeetdsouza.zoxide';  Cmd = 'zoxide' }   # `j` / `ji` directory jumper
+  @{ Id = 'sharkdp.fd';          Cmd = 'fd' }       # FZF_DEFAULT_COMMAND / Alt+c (falias.ps1)
+  @{ Id = 'BurntSushi.ripgrep.MSVC'; Cmd = 'rg' }   # FZF_CTRL_T_COMMAND (falias.ps1)
+  @{ Id = 'sharkdp.bat';         Cmd = 'bat' }      # Ctrl+t file preview (falias.ps1)
 )
 
 if (Get-Command winget -ErrorAction SilentlyContinue) {

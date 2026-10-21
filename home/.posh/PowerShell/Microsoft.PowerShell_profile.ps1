@@ -48,6 +48,13 @@ if ((Get-Command fzf -ErrorAction SilentlyContinue) -and (Get-Module -ListAvaila
   Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
 }
 
+# fzf helper functions (fkill, fbr, fco, fshow, gadd, fstash, fda, ...) and the FZF_*
+# defaults: counterpart of `source ~/.falias` in home/.bashrc, see falias.ps1.
+# Needs fd / rg (bat optional) for the defaults; setup.ps1 installs them.
+if (Get-Command fzf -ErrorAction SilentlyContinue) {
+  . (Join-Path $PSScriptRoot 'falias.ps1')
+}
+
 #Import-Module DockerCompletion
 #Import-Module posh-docker
 #Import-Module posh-git
