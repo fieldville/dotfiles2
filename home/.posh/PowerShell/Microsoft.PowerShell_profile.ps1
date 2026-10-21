@@ -117,8 +117,8 @@ Set-Alias vi vim
 #if (Test-Path alias:rm) { del alias:rm -Force }
 #if (Test-Path alias:ls) { del alias:ls -Force }
 
-# ls / ll / la: `ls` stays the built-in alias for Get-ChildItem. ll/la mirror home/.alias
-# (ll='ls -ltrh', la='ll -A') in Get-ChildItem terms: `-ltr` = sort by mtime, newest last;
+# ls / l / ll / la: `ls` stays the built-in alias for Get-ChildItem. l/ll/la mirror home/.alias
+# (l='ls', ll='ls -ltrh', la='ll -A') in Get-ChildItem terms: `-ltr` = sort by mtime, newest last;
 # `-A` = -Force (hidden/system files; PowerShell never lists . and ..). Set-Alias cannot
 # carry arguments, so these have to be functions.
 # `-h` has no Get-ChildItem equivalent, so ll/la render their own table with a Size column
