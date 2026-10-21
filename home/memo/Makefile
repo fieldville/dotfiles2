@@ -10,14 +10,13 @@ create:
 today: create
 	nvim $(TODAY_FILE)
 
-# 先週（月〜日）の日付のファイルだけを archives/YYYY/MM/ に移動する
-LAST_WEEK_START := $(shell date -d "$$(date +%Y-%m-%d) -$$(( $$(date +%u) - 1 + 7 )) days" +%Y%m%d)
-LAST_WEEK_END   := $(shell date -d "$$(date +%Y-%m-%d) -$$(date +%u) days" +%Y%m%d)
+# 先週以前（今週より前）の日付のファイルを archives/YYYY/MM/ に移動する
+LAST_WEEK_END := $(shell date -d "$$(date +%Y-%m-%d) -$$(date +%u) days" +%Y%m%d)
 
 archive-files:
 	for file in $$(ls -1 memo-*.md); do \
 	  DATE=$$(echo $$file | cut -d '-' -f2 | cut -c1-8); \
-	  [ "$$DATE" -ge "$(LAST_WEEK_START)" ] && [ "$$DATE" -le "$(LAST_WEEK_END)" ] || continue; \
+	  [ "$$DATE" -le "$(LAST_WEEK_END)" ] || continue; \
 	  YEAR=$$(echo $$DATE | cut -c1-4); \
 	  MONTH=$$(echo $$DATE | cut -c5-6); \
 	  mkdir -p archives/$$YEAR/$$MONTH; \
