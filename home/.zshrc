@@ -21,6 +21,11 @@ zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 bindkey "^[p" history-beginning-search-backward-end
 bindkey "^[n" history-beginning-search-forward-end
+# Ctrl-p / Ctrl-n and Up / Down do the same (mirrors .inputrc for bash)
+bindkey "^P" history-beginning-search-backward-end
+bindkey "^N" history-beginning-search-forward-end
+bindkey "^[[A" history-beginning-search-backward-end
+bindkey "^[[B" history-beginning-search-forward-end
 
 export LESS="iSMR"
 
@@ -36,6 +41,7 @@ command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh --cmd j)"
 [ -f ~/.falias ] && source ~/.falias
 [ -f ~/.kalias ] && source ~/.kalias
 [ -f ~/.dalias ] && source ~/.dalias
+[ -f ~/.fieldville/nvim/docker/alias.sh ] && . ~/.fieldville/nvim/docker/alias.sh
 
 # Optional Homebrew plugins (brew install zsh-autosuggestions zsh-syntax-highlighting).
 # Loaded only when present so a fresh machine still starts cleanly.
@@ -63,3 +69,8 @@ if command -v starship >/dev/null 2>&1; then
   export STARSHIP_CONFIG
   eval "$(starship init zsh)"
 fi
+
+# --- added on Ubuntu 26.04 migration (same as .bashrc)
+[ -f ~/.cargo/env ] && . ~/.cargo/env
+export PATH="$HOME/.local/share/fnm:$PATH"
+command -v fnm >/dev/null && eval "$(fnm env --use-on-cd --shell zsh)"
