@@ -6,19 +6,10 @@
 # "filter-process initialization failed ... The pipe is being closed" at every prompt.
 command_timeout = 2000
 
-# Show which environment the prompt is running in: the same Starship config is
-# shared by WSL and PowerShell (launched from WSL), so the OS icon and shell name
-# are the only quick visual cue to tell them apart.
-[os]
-disabled = false
-style = "bold blue"
-
-[os.symbols]
-# Plain text on purpose: work machines may not have a Nerd Font installed,
-# and these must never render as tofu.
-Windows = "win "
-Ubuntu  = "wsl "
-
+# Show the shell name: the same Starship config is shared by WSL (bash) and
+# PowerShell (launched from WSL), so "bash" vs "pwsh" is the quick visual cue to
+# tell them apart. The os module is deliberately left off: it added nothing on
+# top of the shell name and showed a stray Apple glyph on macOS.
 [shell]
 disabled = false
 style = "bold yellow"
