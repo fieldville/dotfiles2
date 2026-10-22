@@ -10,9 +10,10 @@ command_timeout = 2000
 # PowerShell (launched from WSL), so "bash" vs "pwsh" is the quick visual cue to
 # tell them apart. The os module is deliberately left off: it added nothing on
 # top of the shell name and showed a stray Apple glyph on macOS.
+# Each indicator is itself a format string, so the colour can differ per shell
+# (the module-level `style` applies to all of them and is left unused).
 [shell]
 disabled = false
-style = "bold yellow"
-powershell_indicator = "pwsh"
-bash_indicator = "bash"
-zsh_indicator = "zsh"
+powershell_indicator = "[pwsh](bold blue)"
+bash_indicator = "[bash](bold yellow)"
+zsh_indicator = "[zsh](bold green)"
