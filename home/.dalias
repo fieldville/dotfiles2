@@ -104,7 +104,8 @@ EOT
   # Register the alias completion function
   complete -F _$alias_name $alias_name
 }
-export -f docker_alias_completion_wrapper
+# bash only: in zsh `export -f` would print the function body instead.
+[ -n "$BASH_VERSION" ] && export -f docker_alias_completion_wrapper
 
 # Get container IP
 function dock-ip() { docker inspect --format '{{ .NetworkSettings.IPAddress }}' $@ ;}

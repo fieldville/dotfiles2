@@ -97,9 +97,9 @@ alias grt='cd $(git rev-parse --show-cdup)'
 #alias pip='pip3.6'
 #alias python='python3'
 
-# also load inputrc
+# also load inputrc (bash only: $SHELL is still bash when zsh runs this file)
 if [[ $- =~ i ]]; then
-  if [[ $SHELL =~ bash ]]; then
+  if [[ -n $BASH_VERSION ]]; then
     DIR=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
     bind -f $DIR/.inputrc
   fi
