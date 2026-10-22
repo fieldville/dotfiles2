@@ -15,17 +15,25 @@ bashcompinit
 zstyle ':completion:*' list-separator '-->'
 zstyle ':completion:*:manuals' separate-sections true
 
-# --- key bindings: Alt-p / Alt-n search history by the typed prefix
+# --- key bindings. Same as bash (.inputrc): emacs keymap, history search by
+# the typed prefix on Ctrl-p/Ctrl-n, Alt-p/Alt-n and Up/Down.
+# "bindkey -e" is explicit because zsh would otherwise pick the vi keymap
+# whenever EDITOR/VISUAL=nvim is inherited from the environment (e.g. inside byobu).
+bindkey -e
 autoload -U history-search-end
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
-bindkey "^[p" history-beginning-search-backward-end
-bindkey "^[n" history-beginning-search-forward-end
-# Ctrl-p / Ctrl-n and Up / Down do the same (mirrors .inputrc for bash)
-bindkey "^P" history-beginning-search-backward-end
-bindkey "^N" history-beginning-search-forward-end
-bindkey "^[[A" history-beginning-search-backward-end
-bindkey "^[[B" history-beginning-search-forward-end
+for k in "^P" "^[p" "^[[A" "^[OA"; do
+  bindkey "$k" history-beginning-search-backward-end
+done
+for k in "^N" "^[n" "^[[B" "^[OB"; do
+  bindkey "$k" history-beginning-search-forward-end
+done
+# Alt-k / Alt-j cycle completions forward / backward (menu-complete in .inputrc)
+bindkey "^[k" menu-complete
+bindkey "^[j" reverse-menu-complete
+# completion-ignore-case
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
 export LESS="iSMR"
 
