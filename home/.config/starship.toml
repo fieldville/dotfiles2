@@ -14,10 +14,10 @@ disabled = false
 style = "bold blue"
 
 [os.symbols]
-# Nerd Font glyphs written as escapes so editors cannot silently drop them:
-# U+E70F nf-dev-windows, U+F31B nf-linux-ubuntu.
-Windows = " "
-Ubuntu  = " "
+# Plain text on purpose: work machines may not have a Nerd Font installed,
+# and these must never render as tofu.
+Windows = "win "
+Ubuntu  = "wsl "
 
 [shell]
 disabled = false
