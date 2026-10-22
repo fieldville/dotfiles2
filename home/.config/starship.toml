@@ -5,3 +5,23 @@
 # files through the git-lfs filter; Starship then kills git and git-lfs spams
 # "filter-process initialization failed ... The pipe is being closed" at every prompt.
 command_timeout = 2000
+
+# Show which environment the prompt is running in: the same Starship config is
+# shared by WSL and PowerShell (launched from WSL), so the OS icon and shell name
+# are the only quick visual cue to tell them apart.
+[os]
+disabled = false
+style = "bold blue"
+
+[os.symbols]
+# Nerd Font glyphs written as escapes so editors cannot silently drop them:
+# U+E70F nf-dev-windows, U+F31B nf-linux-ubuntu.
+Windows = " "
+Ubuntu  = " "
+
+[shell]
+disabled = false
+style = "bold yellow"
+powershell_indicator = "pwsh"
+bash_indicator = "bash"
+zsh_indicator = "zsh"
