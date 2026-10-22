@@ -35,7 +35,7 @@ Set-PSReadlineKeyHandler -Key 'Ctrl+n' -Function HistorySearchForward
 if (-not $env:EDITOR) { $env:EDITOR = 'nvim' }
 Set-PSReadLineKeyHandler -Chord 'Ctrl+x,Ctrl+e' -Function ViEditVisually
 
-# fzf via PSFzf (PowerShell counterpart of `eval "$(fzf --bash)"` in home/.bashrc):
+# fzf via PSFzf (PowerShell counterpart of `eval "$(fzf --bash)"` in .bashrc):
 # Ctrl+r = fuzzy history search (replaces ReverseSearchHistory),
 # Ctrl+t = fuzzy file-path picker (replaces Emacs SwapCharacters).
 # Install: `winget install junegunn.fzf` and `Install-Module PSFzf -Scope CurrentUser`.
@@ -49,7 +49,7 @@ if ((Get-Command fzf -ErrorAction SilentlyContinue) -and (Get-Module -ListAvaila
 }
 
 # fzf helper functions (fkill, fbr, fco, fshow, gadd, fstash, fda, ...) and the FZF_*
-# defaults: counterpart of `source ~/.falias` in home/.bashrc, see falias.ps1.
+# defaults: counterpart of `source ~/.falias` in .bashrc, see falias.ps1.
 # Needs fd / rg (bat optional) for the defaults; setup.ps1 installs them.
 if (Get-Command fzf -ErrorAction SilentlyContinue) {
   . (Join-Path $PSScriptRoot 'falias.ps1')
@@ -70,17 +70,17 @@ if (Get-Command fzf -ErrorAction SilentlyContinue) {
 #   winget install --id Starship.Starship
 # The default preset uses Nerd Font glyphs; install one and select it in the terminal, e.g.:
 #   winget install --id DEVCOM.JetBrainsMonoNerdFont
-# Config: home/.config/starship.toml in this repo, pointed to via $env:STARSHIP_CONFIG so no
+# Config: .posh/starship.toml in this repo, pointed to via $env:STARSHIP_CONFIG so no
 # symlink into $env:USERPROFILE\.config is needed (a value already set elsewhere wins).
 # Skipped silently when starship is not installed yet, so a fresh machine still starts cleanly.
 if (Get-Command starship -ErrorAction SilentlyContinue) {
   if (-not $env:STARSHIP_CONFIG) {
-    $env:STARSHIP_CONFIG = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..\.config\starship.toml'))
+    $env:STARSHIP_CONFIG = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\starship.toml'))
   }
   Invoke-Expression (&starship init powershell)
 }
 
-# tig: use home/.tigrc in this repo (vim-like g/G to first/last line, custom binds).
+# tig: use .tigrc in this repo (vim-like g/G to first/last line, custom binds).
 # tig reads $TIGRC_USER instead of ~/.tigrc, so no symlink is needed; forward slashes keep
 # the MSYS2 build shipped alongside Git for Windows happy. A value already set elsewhere wins.
 if (-not $env:TIGRC_USER) {
@@ -117,7 +117,7 @@ Set-Alias vi vim
 #if (Test-Path alias:rm) { del alias:rm -Force }
 #if (Test-Path alias:ls) { del alias:ls -Force }
 
-# ls / l / ll / la: `ls` stays the built-in alias for Get-ChildItem. l/ll/la mirror home/.alias
+# ls / l / ll / la: `ls` stays the built-in alias for Get-ChildItem. l/ll/la mirror .alias
 # (l='ls', ll='ls -ltrh', la='ll -A') in Get-ChildItem terms: `-ltr` = sort by mtime, newest last;
 # `-A` = -Force (hidden/system files; PowerShell never lists . and ..). Set-Alias cannot
 # carry arguments, so these have to be functions.
@@ -169,7 +169,7 @@ function which ($command) {
 function find { busybox find $args }
 
 # ---------------------------------------------------------------------------
-# Git aliases: mirrors the "aliases for git" section of home/.alias (bash).
+# Git aliases: mirrors the "aliases for git" section of .alias (bash).
 # Keep the two in sync when adding one. PowerShell resolves aliases before
 # functions, so built-in aliases that collide with ours (gc=Get-Content,
 # gl=Get-Location, gp=Get-ItemProperty, gm=Get-Member, gcm=Get-Command,
@@ -289,7 +289,7 @@ function da { docker ps -a }
 #Set-Alias kubectl 'C:\Program Files\Docker\Docker\Resources\bin\kubectl.exe'
 
 # zoxide as `j` / `ji` (interactive via fzf): PowerShell counterpart of
-# `eval "$(zoxide init bash --cmd j)"` in home/.bashrc. Install: `winget install ajeetdsouza.zoxide`.
+# `eval "$(zoxide init bash --cmd j)"` in .bashrc. Install: `winget install ajeetdsouza.zoxide`.
 # Kept at the end of the profile: on Windows PowerShell 5.1 zoxide hooks the prompt
 # function, so it has to run after Starship has defined it. Skipped silently when missing.
 if (Get-Command zoxide -ErrorAction SilentlyContinue) {

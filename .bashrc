@@ -52,10 +52,11 @@ EDITOR=nvim
 export EDITOR
 
 # starship prompt (keep LAST so it overrides byobu's PS1 above)
-# Config lives in this repo, same as the PowerShell profile does, so no
-# ~/.config/starship.toml symlink is needed on a new machine.
+# Config is .posh/starship.toml in this repo (shared with the PowerShell profile),
+# found via the real location of this file, so no ~/.config/starship.toml symlink
+# is needed on a new machine. A STARSHIP_CONFIG already set wins.
 if [[ $- == *i* ]] && command -v starship >/dev/null 2>&1; then
-  : "${STARSHIP_CONFIG:=$HOME/.dotfiles2/home/.config/starship.toml}"
+  : "${STARSHIP_CONFIG:=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.posh/starship.toml}"
   export STARSHIP_CONFIG
   eval "$(starship init bash)"
 fi

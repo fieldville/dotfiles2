@@ -1,4 +1,4 @@
-# PowerShell counterpart of home/.falias (fzf helper functions, mostly from
+# PowerShell counterpart of .falias (fzf helper functions, mostly from
 # https://github.com/junegunn/fzf/wiki/Examples). Dot-sourced from
 # Microsoft.PowerShell_profile.ps1 when fzf is on PATH. Keep the two in sync.
 #
