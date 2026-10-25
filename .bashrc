@@ -35,6 +35,7 @@ export PATH=~/.local/bin:$PATH
 
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
 [ -f ~/.alias ] && . ~/.alias
+[ -f ~/.galias ] && . ~/.galias
 [ -f ~/.alias.private ] && . ~/.alias.private
 command -v fzf >/dev/null 2>&1 && eval "$(fzf --bash)"
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init bash --cmd j)"
