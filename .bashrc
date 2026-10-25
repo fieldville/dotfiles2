@@ -33,7 +33,6 @@ export PATH=/usr/local/bin:$PATH
 export PATH=/sbin:/usr/sbin:$PATH
 export PATH=~/.local/bin:$PATH
 
-[ -f ~/.bash_aliases ] && . ~/.bash_aliases
 [ -f ~/.alias ] && . ~/.alias
 [ -f ~/.galias ] && . ~/.galias
 [ -f ~/.alias.private ] && . ~/.alias.private

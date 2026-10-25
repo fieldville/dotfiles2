@@ -1,7 +1,5 @@
 ########################################
-#export FZF_DEFAULT_OPTS='--preview "bat --color=always --style=header,grid --line-range :100 {}"'
 unset FZF_DEFAULT_OPTS
-#export FZF_DEFAULT_COMMAND='rg --hidden --no-ignore --files'
 export FZF_DEFAULT_COMMAND="fd -H -E '.git/' -L"
 export FZF_ALT_C_COMMAND="fd -H -E '.git/' -L -t d"
 export FZF_CTRL_T_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
@@ -172,17 +170,6 @@ fstash() {
 }
 
 ########################################
-# Install (one or multiple) selected application(s)
-# using "brew search" as source input
-# mnemonic [B]rew [I]nstall [P]lugin
-#bip() {
-#  local inst=$(brew search | fzf -m)
-#
-#  if [[ $inst ]]; then
-#    for prog in $(echo $inst);
-#    do brew install $prog; done;
-#  fi
-#}
 # Update (one or multiple) selected application(s)
 # mnemonic [B]rew [U]pdate [P]lugin
 bup() {
@@ -219,14 +206,7 @@ function fds() {
 
   [ -n "$cid" ] && docker stop "$cid"
 }
-# Select a docker container to remove
-#function fdrm() {
-#  local cid
-#  cid=$(docker ps -a | sed 1d | fzf -q "$1" | awk '{print $1}')
-#
-#  [ -n "$cid" ] && docker rm "$cid"
-#}
-# Same as above, but allows multi selection:
+# Select docker containers to remove (multi selection)
 function fdrm() {
   docker ps -a | sed 1d | fzf -q "$1" --no-sort -m --tac | awk '{ print $1 }' | xargs -r docker rm
 }

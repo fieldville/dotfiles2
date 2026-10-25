@@ -1,4 +1,4 @@
-# Git aliases: PowerShell counterpart of .galias (bash/zsh) in this repo, dot-sourced from
+# Git aliases: PowerShell counterpart of .galias (bash) in this repo, dot-sourced from
 # Microsoft.PowerShell_profile.ps1 like falias.ps1. Keep the two in sync when adding one.
 # PowerShell resolves aliases before functions, so built-in aliases that collide with ours
 # (gc=Get-Content, gl=Get-Location, gp=Get-ItemProperty, gm=Get-Member, gcm=Get-Command,
