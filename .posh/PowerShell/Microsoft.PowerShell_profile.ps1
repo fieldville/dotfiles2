@@ -43,7 +43,7 @@ Set-PSReadLineKeyHandler -Chord 'Ctrl+x,Ctrl+e' -Function ViEditVisually
 # (Documents\WindowsPowerShell\Modules vs Documents\PowerShell\Modules), so run
 # Install-Module from BOTH shells. Skipped silently when either piece is missing,
 # so a fresh machine still starts cleanly with PSReadLine's default bindings.
-if ((Get-Command fzf -ErrorAction SilentlyContinue) -and (Get-Module -ListAvailable PSFzf)) {
+if ((Get-Command fzf -ErrorAction Ignore) -and (Get-Module -ListAvailable PSFzf)) {
   Import-Module PSFzf
   Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
 }
@@ -51,7 +51,7 @@ if ((Get-Command fzf -ErrorAction SilentlyContinue) -and (Get-Module -ListAvaila
 # fzf helper functions (fkill, fbr, fco, fshow, gadd, fstash, fda, ...) and the FZF_*
 # defaults: counterpart of `source ~/.falias` in .bashrc, see falias.ps1.
 # Needs fd / rg (bat optional) for the defaults; setup.ps1 installs them.
-if (Get-Command fzf -ErrorAction SilentlyContinue) {
+if (Get-Command fzf -ErrorAction Ignore) {
   . (Join-Path $PSScriptRoot 'falias.ps1')
 }
 
@@ -73,7 +73,7 @@ if (Get-Command fzf -ErrorAction SilentlyContinue) {
 # Config: .posh/starship.toml in this repo, pointed to via $env:STARSHIP_CONFIG so no
 # symlink into $env:USERPROFILE\.config is needed (a value already set elsewhere wins).
 # Skipped silently when starship is not installed yet, so a fresh machine still starts cleanly.
-if (Get-Command starship -ErrorAction SilentlyContinue) {
+if (Get-Command starship -ErrorAction Ignore) {
   if (-not $env:STARSHIP_CONFIG) {
     $env:STARSHIP_CONFIG = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\starship.toml'))
   }
@@ -93,7 +93,7 @@ if (-not $env:TIGRC_USER) {
 # for both the scoop and the winget (C:\Program Files\Git) installs, and expose usr\bin only
 # for the duration of the tig process so the `!sh -c ...` binds in .tigrc work.
 # A tig already on PATH (e.g. Git Bash, or a hand-installed one) wins, nothing is shadowed then.
-if (-not (Get-Command tig -CommandType Application -ErrorAction SilentlyContinue)) {
+if (-not (Get-Command tig -CommandType Application -ErrorAction Ignore)) {
   function tig {
     $execPath = git --exec-path 2>$null
     if (-not $execPath) { Write-Error "tig: git not found"; return }
@@ -300,7 +300,7 @@ function da { docker ps -a }
 # `eval "$(zoxide init bash --cmd j)"` in .bashrc. Install: `winget install ajeetdsouza.zoxide`.
 # Kept at the end of the profile: on Windows PowerShell 5.1 zoxide hooks the prompt
 # function, so it has to run after Starship has defined it. Skipped silently when missing.
-if (Get-Command zoxide -ErrorAction SilentlyContinue) {
+if (Get-Command zoxide -ErrorAction Ignore) {
   Invoke-Expression (& { (zoxide init powershell --cmd j | Out-String) })
 }
 
