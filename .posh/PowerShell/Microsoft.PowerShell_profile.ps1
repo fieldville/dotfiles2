@@ -118,8 +118,13 @@ Set-Alias vi nvim
 function view { nvim -R @args }
 function vimdiff { nvim -d @args }
 
-#if (Test-Path alias:rm) { del alias:rm -Force }
-#if (Test-Path alias:ls) { del alias:ls -Force }
+# rm / find: Unix semantics via busybox (frippery.busybox-w32, installed by setup.ps1), so
+# `rm -rf x` and `find . -name '*.log'` work as in bash. PowerShell resolves aliases before
+# functions, so the built-in rm alias (Remove-Item) has to go first or the function never runs.
+# fd is the usual day-to-day tool; `find` is for muscle memory and copy-pasted one-liners.
+if (Test-Path alias:rm) { Remove-Item alias:rm -Force }
+function rm { busybox rm @args }
+function find { busybox find @args }
 
 # ls / l / ll / la: `ls` stays the built-in alias for Get-ChildItem. l/ll/la mirror .alias
 # (l='ls', ll='ls -ltrh', la='ll -A') in Get-ChildItem terms: `-ltr` = sort by mtime, newest last;
@@ -170,7 +175,6 @@ function la {
 function which ($command) {
   Get-command -Name $command -ShowCommandInfo | Format-List -Property Definition
 }
-function find { busybox find $args }
 
 # ---------------------------------------------------------------------------
 # Git aliases: mirrors the "aliases for git" section of .alias (bash).
