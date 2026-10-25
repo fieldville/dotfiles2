@@ -211,7 +211,7 @@ function which ($command) {
 }
 
 # fa: list the functions and aliases whose name or definition matches a regex, the
-# counterpart of `alias | grep ...` in bash (`fa kube`, `fa 'docker compose'`, `fa` for all).
+# counterpart of `alias | grep ...` in bash (`fa git`, `fa 'git log'`, `fa` for all).
 # Covers everything in the session, so posh-git / PSFzf exports show up too.
 function fa ($Pattern = '.') {
   Get-ChildItem function:, alias: | Where-Object { $_.Name -match $Pattern -or $_.Definition -match $Pattern } |

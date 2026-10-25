@@ -12,7 +12,7 @@
 #  - brew helpers (bup / bcp) have no counterpart.
 #
 # Every function returns silently when fzf is cancelled (Esc / Ctrl+c -> exit code 130)
-# or nothing is selected, so no git/docker command runs with an empty argument.
+# or nothing is selected, so no git command runs with an empty argument.
 
 ########################################
 # fzf defaults. PSFzf honours these too: FZF_CTRL_T_COMMAND / FZF_ALT_C_COMMAND are run
@@ -157,39 +157,4 @@ function fstash {
       git stash show -p $sha
     }
   }
-}
-
-########################################
-# fda - select a docker container to start and attach to
-function fda {
-  param($q)
-  $sel = docker ps -a | fzf --header-lines=1 -1 "--query=$q"
-  if ($LASTEXITCODE -ne 0 -or -not $sel) { return }
-  $cid = ($sel -split '\s+')[0]
-  docker start $cid
-  if ($LASTEXITCODE -eq 0) { docker attach $cid }
-}
-
-# fds - select a running docker container to stop
-function fds {
-  param($q)
-  $sel = docker ps | fzf --header-lines=1 "--query=$q"
-  if ($LASTEXITCODE -ne 0 -or -not $sel) { return }
-  docker stop ($sel -split '\s+')[0]
-}
-
-# fdrm - select docker container(s) to remove
-function fdrm {
-  param($q)
-  $sel = docker ps -a | fzf --header-lines=1 "--query=$q" --no-sort -m --tac
-  if ($LASTEXITCODE -ne 0 -or -not $sel) { return }
-  docker rm (@($sel) | ForEach-Object { ($_ -split '\s+')[0] })
-}
-
-# fdrmi - select docker image(s) to remove (3rd column = IMAGE ID)
-function fdrmi {
-  param($q)
-  $sel = docker images | fzf --header-lines=1 "--query=$q" --no-sort -m --tac
-  if ($LASTEXITCODE -ne 0 -or -not $sel) { return }
-  docker rmi (@($sel) | ForEach-Object { ($_ -split '\s+')[2] })
 }
