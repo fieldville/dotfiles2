@@ -40,8 +40,6 @@ export PATH=~/.local/bin:$PATH
 command -v fzf >/dev/null 2>&1 && eval "$(fzf --bash)"
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init bash --cmd j)"
 [ -f ~/.falias ] && source ~/.falias
-[ -f ~/.kalias ] && source ~/.kalias
-[ -f ~/.dalias ] && source ~/.dalias
 [ -f ~/.fieldville/nvim/docker/alias.sh ] && . ~/.fieldville/nvim/docker/alias.sh
 
 [ -r ~/.byobu/prompt ] && . ~/.byobu/prompt #byobu-prompt#

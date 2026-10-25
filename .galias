@@ -1,5 +1,5 @@
 # aliases for git (bash/zsh). Sourced from .bashrc / .zshrc right after .alias, like
-# .falias / .kalias / .dalias. PowerShell counterpart: .posh/PowerShell/galias.ps1,
+# .falias. PowerShell counterpart: .posh/PowerShell/galias.ps1,
 # keep the two in sync when adding one.
 alias gcl='git clone'
 alias ga='git add'
