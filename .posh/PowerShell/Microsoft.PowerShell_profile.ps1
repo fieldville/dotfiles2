@@ -1,3 +1,4 @@
+# Proxy template for machines behind a corporate proxy: fill in and uncomment as needed.
 # $user = "username"
 # $password = "***********"
 # $proxyhost = "proxy.co.jp:3128"
@@ -17,9 +18,10 @@
 # # choco config set proxyUser $user
 # # choco config set proxyPassword $password
 
+# Line editing: Emacs keys like bash/readline (.inputrc). Ctrl+p / Ctrl+n search history by
+# the typed prefix, Tab cycles through a completion menu.
 Import-Module PSReadline
 Set-PSReadlineOption -EditMode Emacs
-#Set-PSReadlineOption -EditMode vi
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 Set-PSReadlineKeyHandler -Key 'Ctrl+p' -Function HistorySearchBackward
 Set-PSReadlineKeyHandler -Key 'Ctrl+n' -Function HistorySearchForward
@@ -42,10 +44,6 @@ if ($psrl -lt [version]'2.1') {
   Set-PSReadLineKeyHandler -Chord 'Ctrl+f', 'RightArrow' -Function ForwardChar
   Set-PSReadLineKeyHandler -Chord 'Alt+f' -Function ForwardWord
 }
-#Set-PSReadlineKeyHandler -Key 'Ctrl+r' -Function ReverseSearchHistory
-#Set-PSReadlineKeyHandler -Key 'Ctrl+s' -Function ForwardSearchHistory
-#Set-PSReadlineKeyHandler -Key 'Ctrl+k' -Function KillLine
-#Set-PSReadlineKeyHandler -Key 'Ctrl+u' -Function BackwardKillLine
 
 # Ctrl+x, Ctrl+e: edit the current command line in $env:EDITOR (like bash's edit-and-execute-command).
 # Useful for pasting / editing multi-line scriptlets; the buffer is replaced on save & quit.
@@ -69,29 +67,24 @@ if ((Get-Command fzf -ErrorAction Ignore) -and (Get-Module -ListAvailable PSFzf)
 
 # fzf helper functions (fkill, fbr, fco, fshow, gadd, fstash, fda, ...) and the FZF_*
 # defaults: counterpart of `source ~/.falias` in .bashrc, see falias.ps1.
-# Needs fd / rg (bat optional) for the defaults; setup.ps1 installs them.
+# Needs fd / rg (bat optional) for the defaults.
 if (Get-Command fzf -ErrorAction Ignore) {
   . (Join-Path $PSScriptRoot 'falias.ps1')
 }
 
-#Import-Module DockerCompletion
-#Import-Module posh-docker
-#Import-Module posh-git
-#Import-Module oh-my-posh
-#Set-PoshPrompt -Theme paradox
-#Set-PoshPrompt -Theme robbyrussell
-#Set-PoshPrompt -Theme avit
-#Set-PoshPrompt -Theme rudolfs-light
-#Set-PoshPrompt -Theme rudolfs-dark
-#Set-PoshPrompt -Theme honukai
+# posh-git: git tab completion only, the prompt itself is Starship (below, so it wins).
+# Optional: `Install-Module posh-git -Scope CurrentUser`, skipped silently when missing.
+if (Get-Module -ListAvailable posh-git) {
+  Import-Module posh-git
+}
 
-# Starship prompt (https://starship.rs/). Install via WinGet:
-#   winget install --id Starship.Starship
-# The default preset uses Nerd Font glyphs; install one and select it in the terminal, e.g.:
-#   winget install --id DEVCOM.JetBrainsMonoNerdFont
-# Config: .posh/starship.toml in this repo, pointed to via $env:STARSHIP_CONFIG so no
-# symlink into $env:USERPROFILE\.config is needed (a value already set elsewhere wins).
-# Skipped silently when starship is not installed yet, so a fresh machine still starts cleanly.
+# Starship prompt (https://starship.rs). Install: `winget install Starship.Starship`. The
+# default preset uses Nerd Font glyphs, so also install one and select it in the terminal,
+# e.g. `winget install DEVCOM.JetBrainsMonoNerdFont`.
+# Config: .posh/starship.toml in this repo (shared with .bashrc), pointed to via
+# $env:STARSHIP_CONFIG so no symlink into $env:USERPROFILE\.config is needed; a value already
+# set elsewhere wins. Skipped silently when starship is missing, so a fresh machine still
+# starts cleanly with the default prompt.
 if (Get-Command starship -ErrorAction Ignore) {
   if (-not $env:STARSHIP_CONFIG) {
     $env:STARSHIP_CONFIG = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\starship.toml'))
@@ -99,9 +92,9 @@ if (Get-Command starship -ErrorAction Ignore) {
   Invoke-Expression (&starship init powershell)
 }
 
-# tig: use .tigrc in this repo (vim-like g/G to first/last line, custom binds).
+# tig config: .tigrc in this repo (vim-like g/G to first/last line, custom binds).
 # tig reads $TIGRC_USER instead of ~/.tigrc, so no symlink is needed; forward slashes keep
-# the MSYS2 build shipped alongside Git for Windows happy. A value already set elsewhere wins.
+# the MSYS2 build shipped with Git for Windows happy. A value already set elsewhere wins.
 if (-not $env:TIGRC_USER) {
   $env:TIGRC_USER = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..\.tigrc')) -replace '\\', '/'
 }
@@ -111,7 +104,7 @@ if (-not $env:TIGRC_USER) {
 # Locate it through `git --exec-path` (<root>\{mingw64,ucrt64}\libexec\git-core) so this works
 # for both the scoop and the winget (C:\Program Files\Git) installs, and expose usr\bin only
 # for the duration of the tig process so the `!sh -c ...` binds in .tigrc work.
-# A tig already on PATH (e.g. Git Bash, or a hand-installed one) wins, nothing is shadowed then.
+# A tig already on PATH (e.g. a hand-installed one) wins, nothing is shadowed then.
 if (-not (Get-Command tig -CommandType Application -ErrorAction Ignore)) {
   function tig {
     $execPath = git --exec-path 2>$null
@@ -131,15 +124,15 @@ if (-not (Get-Command tig -CommandType Application -ErrorAction Ignore)) {
   }
 }
 
-# editor: mirrors `alias vi=nvim` / `view='nvim -R'` / `vimdiff='nvim -d'` in .alias (bash).
+# editor: mirrors `alias vi=nvim` / `view='nvim -R'` / `vimdiff='nvim -d'` in .alias.
 # Set-Alias cannot carry arguments, so `view` and `vimdiff` are functions.
 Set-Alias vi nvim
 function view { nvim -R @args }
 function vimdiff { nvim -d @args }
 
-# rm / find: Unix semantics via busybox (frippery.busybox-w32, installed by setup.ps1), so
-# `rm -rf x` and `find . -name '*.log'` work as in bash. PowerShell resolves aliases before
-# functions, so the built-in rm alias (Remove-Item) has to go first or the function never runs.
+# rm / find: Unix semantics via busybox (`winget install frippery.busybox-w32`), so `rm -rf x`
+# and `find . -name '*.log'` work as in bash. PowerShell resolves aliases before functions,
+# so the built-in rm alias (Remove-Item) has to go first or the function never runs.
 # fd is the usual day-to-day tool; `find` is for muscle memory and copy-pasted one-liners.
 if (Test-Path alias:rm) { Remove-Item alias:rm -Force }
 function rm { busybox rm @args }
@@ -212,6 +205,7 @@ function la {
   if ($MyInvocation.PipelineLength -eq $MyInvocation.PipelinePosition) { $items | Format-Table $LsLongColumns } else { $items }
 }
 
+# which: show where a command resolves to (alias, function, cmdlet or executable path).
 function which ($command) {
   Get-command -Name $command -ShowCommandInfo | Format-List -Property Definition
 }
@@ -224,14 +218,11 @@ function egrep { egrep --color=auto $args }
 function fgrep { fgrep --color=auto $args }
 function grep { grep --color --exclude-dir='{.git,.svn}' --exclude=\*.html\* $args }
 
-# for docker
-function dco { docker-compose $args }
-function dps { docker ps $args }
+# docker: the everyday subset of .dalias (dco, dps, ds, da).
+function dco { docker compose @args }
+function dps { docker container ls @args }
 function ds { docker images; docker ps -a }
 function da { docker ps -a }
-
-#Set-Alias docker 'C:\Program Files\Docker\Docker\Resources\bin\docker.exe'
-#Set-Alias kubectl 'C:\Program Files\Docker\Docker\Resources\bin\kubectl.exe'
 
 # zoxide as `j` / `ji` (interactive via fzf): PowerShell counterpart of
 # `eval "$(zoxide init bash --cmd j)"` in .bashrc. Install: `winget install ajeetdsouza.zoxide`.
@@ -240,5 +231,3 @@ function da { docker ps -a }
 if (Get-Command zoxide -ErrorAction Ignore) {
   Invoke-Expression (& { (zoxide init powershell --cmd j | Out-String) })
 }
-
-#Set-Location C:\
