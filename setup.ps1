@@ -37,6 +37,7 @@ $tools = @(
   @{ Id = 'BurntSushi.ripgrep.MSVC'; Cmd = 'rg' }   # FZF_CTRL_T_COMMAND (falias.ps1)
   @{ Id = 'sharkdp.bat';         Cmd = 'bat' }      # Ctrl+t file preview (falias.ps1)
   @{ Id = 'frippery.busybox-w32'; Cmd = 'busybox' } # `rm` / `find` functions (busybox rm / find)
+  @{ Id = 'Neovim.Neovim';       Cmd = 'nvim' }     # `vi` / `view` / `vimdiff`
 )
 
 if (Get-Command winget -ErrorAction SilentlyContinue) {
