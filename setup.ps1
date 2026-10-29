@@ -57,7 +57,13 @@ if (Get-Command winget -ErrorAction SilentlyContinue) {
 # Modules used by the profile. Installed per shell on purpose: Windows PowerShell 5.1 and
 # pwsh keep separate user module dirs (Documents\WindowsPowerShell\Modules vs
 # Documents\PowerShell\Modules), so a module installed from one is invisible to the other.
-$modules = @('PSFzf')
+# Each entry: name -> minimum version. PSReadLine 2.0.0 ships with Windows PowerShell 5.1
+# and counts as "installed", but inline prediction (profile) needs 2.1+, so a version check
+# is what triggers the update there; pwsh already has a newer one and is a no-op.
+$modules = @(
+  @{ Name = 'PSFzf';       Min = '0.0' }
+  @{ Name = 'PSReadLine';  Min = '2.1' }
+)
 
 # PowerShell 5.1 defaults to TLS 1.0/1.1, which the PowerShell Gallery no longer accepts.
 if ($PSVersionTable.PSVersion.Major -lt 6) {
@@ -65,11 +71,11 @@ if ($PSVersionTable.PSVersion.Major -lt 6) {
 }
 
 foreach ($m in $modules) {
-  if (Get-Module -ListAvailable -Name $m) {
-    "Already installed: $m"
+  if (Get-Module -ListAvailable -Name $m.Name | Where-Object { $_.Version -ge [version]$m.Min }) {
+    "Already installed: $($m.Name)"
     continue
   }
-  "Installing $m ..."
-  Install-Module -Name $m -Scope CurrentUser -Force
-  "Installed $m"
+  "Installing $($m.Name) ..."
+  Install-Module -Name $m.Name -MinimumVersion $m.Min -Scope CurrentUser -Force
+  "Installed $($m.Name)"
 }
