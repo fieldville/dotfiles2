@@ -23,6 +23,7 @@
 # second press (bash's `complete`); Shift+Tab opens the cycling menu (menu-complete).
 Import-Module PSReadline
 Set-PSReadlineOption -EditMode Emacs
+Set-PSReadlineOption -CompletionQueryItems 100   # ask "Display all N possibilities?" like bash's completion-query-items
 Set-PSReadlineKeyHandler -Key Tab -Function Complete
 Set-PSReadlineKeyHandler -Key 'Shift+Tab' -Function MenuComplete
 Set-PSReadlineKeyHandler -Key 'Ctrl+p' -Function HistorySearchBackward
