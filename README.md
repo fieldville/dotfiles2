@@ -1,7 +1,7 @@
 dotfiles2
 =========
 
-The conservative, bash-only dotfiles. Same layout as
+The conservative dotfiles: bash and zsh on Unix, PowerShell on Windows. Same layout as
 [dotfiles](https://github.com/fieldville/dotfiles): each dotfile sits at the repo root
 and is symlinked into `~`.
 
@@ -18,8 +18,27 @@ $ ./setup.bash
 Use `./setup.bash -y` to link everything without asking. To pick up a layout change
 after `git pull`, just run it again; it relinks in place.
 
-Starship reads `.posh/starship.toml` through `STARSHIP_CONFIG`, set by `.bashrc` and the
-PowerShell profile from their own location, so no `~/.config/starship.toml` link is needed.
+Starship reads `.posh/starship.toml` through `STARSHIP_CONFIG`, set by `.bashrc`, `.zshrc`
+and the PowerShell profile from their own location, so no `~/.config/starship.toml` link
+is needed.
+
+zsh (macOS default shell):
+--------------------------
+
+`.zshrc` / `.zprofile` are the zsh counterpart of `.bashrc` / `.profile` (plain zsh +
+Starship, no oh-my-zsh). Both shells source the same alias files (`.alias`, `.galias`,
+`.falias`) and share the Starship config, so linking this repo alone is enough.
+zsh-autosuggestions / zsh-syntax-highlighting are optional and picked up from Homebrew
+or the Ubuntu packages when installed:
+
+```
+$ brew install starship zsh-autosuggestions zsh-syntax-highlighting fzf zoxide   # macOS
+$ sudo apt install zsh zsh-autosuggestions zsh-syntax-highlighting               # Ubuntu / WSL
+$ ./setup.bash                                                                   # links .zshrc and .zprofile among the rest
+```
+
+macOS Terminal and iTerm already start zsh; elsewhere run `chsh -s "$(command -v zsh)"`
+and log in again.
 
 Windows (PowerShell):
 ---------------------

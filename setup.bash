@@ -29,7 +29,7 @@ status() {
   fi
 }
 
-for f in $(find . -mindepth 1 -maxdepth 1 -name '.*' ! -name '.git' ! -name '.*swp' ! -name '.vscode' \
+for f in $(find . -mindepth 1 -maxdepth 1 -name '.*' ! -name '.git' ! -name '.*swp' ! -name '.vscode' ! -name '.zcompdump*' \
              | sed 's|^\./||' | sort); do
   if (( yes_all )); then
     link "$f"

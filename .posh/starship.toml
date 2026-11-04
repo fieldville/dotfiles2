@@ -6,8 +6,8 @@
 # "filter-process initialization failed ... The pipe is being closed" at every prompt.
 command_timeout = 2000
 
-# Show the shell name: the same Starship config is shared by WSL (bash) and
-# PowerShell (launched from WSL), so "bash" vs "pwsh" is the quick visual cue to
+# Show the shell name: the same Starship config is shared by bash (WSL / Linux),
+# zsh (macOS) and PowerShell, so "bash" / "zsh" / "pwsh" is the quick visual cue to
 # tell them apart. The os module is deliberately left off: it added nothing on
 # top of the shell name and showed a stray Apple glyph on macOS.
 # Each indicator is itself a format string, so the colour can differ per shell

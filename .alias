@@ -8,9 +8,9 @@ alias h='history'
 alias dmesg='dmesg -T'
 alias grep='grep -I --color --exclude-dir={.git,.svn,HTML} --exclude={\*.pyc\*}'
 
-# aliases for git live in .galias (sourced from .bashrc right after this file)
+# aliases for git live in .galias (sourced from .bashrc / .zshrc right after this file)
 
-# also load inputrc
+# also load inputrc (bash only: $SHELL is still bash when zsh runs this file)
 if [[ $- =~ i ]]; then
   if [[ -n $BASH_VERSION ]]; then
     DIR=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
