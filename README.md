@@ -40,6 +40,20 @@ $ ./setup.bash                                                                  
 macOS Terminal and iTerm already start zsh; elsewhere run `chsh -s "$(command -v zsh)"`
 and log in again.
 
+Machine-local settings:
+-----------------------
+
+Settings that belong to one machine only live in `~`, outside this repo, and are sourced
+when present:
+
+| File | Sourced from | For |
+| --- | --- | --- |
+| `~/.profile.private` | `.zprofile` / `.profile` (login shell) | `PATH`, `export`s, tokens |
+| `~/.alias.private` | `.zshrc` / `.bashrc` (interactive shell) | aliases, functions, completions |
+
+Both files are read by bash and zsh alike, so keep them to syntax both accept. The
+PowerShell counterpart is `~\.alias.private.ps1`.
+
 Windows (PowerShell):
 ---------------------
 
