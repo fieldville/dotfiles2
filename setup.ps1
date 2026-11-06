@@ -38,6 +38,7 @@ $tools = @(
   @{ Id = 'sharkdp.bat';         Cmd = 'bat' }      # Ctrl+t file preview (falias.ps1)
   @{ Id = 'frippery.busybox-w32'; Cmd = 'busybox' } # `rm` / `find` functions (busybox rm / find)
   @{ Id = 'Neovim.Neovim';       Cmd = 'nvim' }     # `vi` / `view` / `vimdiff`
+  @{ Id = 'JesseDuffield.lazygit'; Cmd = 'lazygit' } # `lg`
 )
 
 if (Get-Command winget -ErrorAction SilentlyContinue) {

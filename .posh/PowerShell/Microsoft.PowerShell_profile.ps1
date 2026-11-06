@@ -134,6 +134,9 @@ Set-Alias vi nvim
 function view { nvim -R @args }
 function vimdiff { nvim -d @args }
 
+# lazygit: mirrors `alias lg='lazygit'` in .alias.
+Set-Alias lg lazygit
+
 # rm / find: Unix semantics via busybox (`winget install frippery.busybox-w32`), so `rm -rf x`
 # and `find . -name '*.log'` work as in bash. PowerShell resolves aliases before functions,
 # so the built-in rm alias (Remove-Item) has to go first or the function never runs.
