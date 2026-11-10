@@ -145,6 +145,15 @@ if (Test-Path alias:rm) { Remove-Item alias:rm -Force }
 function rm { busybox rm @args }
 function find { busybox find @args }
 
+# sed: the busybox one as well (no sed ships with Windows, and the GNU sed in Git for Windows'
+# usr\bin is off PATH on purpose), so `sed -i 's/a/b/' file` and `... | sed -n '1,5p'` work as
+# in bash. busybox sed covers the GNU extensions used day to day (-i[SFX], -E/-r, -n, -e, -z).
+# As with grep, a function does not hand its pipeline input on to the commands it calls, so
+# the input is fed explicitly with `$input |`. A sed.exe already on PATH wins (nothing shadowed).
+if (-not (Get-Command sed -CommandType Application -ErrorAction Ignore)) {
+  function sed { $input | busybox sed @args }
+}
+
 # cd -: back to the previous directory, as in bash. pwsh 6.2+ has this built in
 # (Set-Location keeps a location history, `cd -` goes back and `cd +` forward), Windows
 # PowerShell 5.1 does not, so it gets a wrapper that remembers one previous directory in
