@@ -36,7 +36,7 @@ $tools = @(
   @{ Id = 'sharkdp.fd';          Cmd = 'fd' }       # FZF_DEFAULT_COMMAND / Alt+c (falias.ps1)
   @{ Id = 'BurntSushi.ripgrep.MSVC'; Cmd = 'rg' }   # FZF_CTRL_T_COMMAND (falias.ps1)
   @{ Id = 'sharkdp.bat';         Cmd = 'bat' }      # Ctrl+t file preview (falias.ps1)
-  @{ Id = 'frippery.busybox-w32'; Cmd = 'busybox' } # `rm` / `find` / `sed` functions (busybox rm / find / sed)
+  @{ Id = 'frippery.busybox-w32'; Cmd = 'busybox' } # `rm` / `find` / `sed` / `awk` functions (busybox rm / find / sed / awk)
   @{ Id = 'Neovim.Neovim';       Cmd = 'nvim' }     # `vi` / `view` / `vimdiff`
   @{ Id = 'JesseDuffield.lazygit'; Cmd = 'lazygit' } # `lg`
 )
