@@ -84,6 +84,12 @@ done
 # Alt-k / Alt-j cycle completions forward / backward (menu-complete in .inputrc)
 bindkey "^[k" menu-complete
 bindkey "^[j" reverse-menu-complete
+# Ctrl-x Ctrl-e opens the current command line in $VISUAL/$EDITOR, as in bash
+# (edit-and-execute-command). zsh ships the widget but does not bind it by default.
+# Unlike bash, the edited line is put back on the prompt and runs only on Enter.
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey "^X^E" edit-command-line
 # completion-ignore-case
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
