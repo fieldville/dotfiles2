@@ -1,13 +1,32 @@
 #Requires AutoHotkey v2.0
-#SingleInstance Force
+#SingleInstance Off
 Persistent
 
 ; CapsLock(英数)キーを左Ctrlにする (Raw Input 版)。
+;
 ; 日本語配列では英数キーの「離した」イベントがキーボードフックに届かず
 ; Ctrl が張り付くため、押下/解放の検出は Raw Input (WM_INPUT) で行う。
-; フック側のホットキーは、英数キー本来の動作を止めるためだけに置いている。
-*sc03A::return
-*sc03A up::return
+;
+; キーボードフックを持つプロセスには Raw Input が届かないため、2プロセス構成にしている。
+;   親 (引数なし)  : Raw Input で英数キーの押下/解放を検出し、LCtrl を送る。フックは持たない。
+;   子 (引数 hook) : フックで英数キー本来の動作 (IMEの英数モード切替) を止めるだけ。
+; このファイルを普通に起動すれば、子は自動で起動・終了する。
+
+if A_Args.Length && A_Args[1] = "hook" {
+    A_IconHidden := true
+    Hotkey "*sc03A", (*) => 0
+    Hotkey "*sc03A up", (*) => 0
+    return
+}
+
+; 親の二重起動防止
+DllCall("CreateMutex", "Ptr", 0, "Int", 0, "Str", "caps2ctrl_rawinput_main", "Ptr")
+if A_LastError = 183  ; ERROR_ALREADY_EXISTS
+    ExitApp
+
+; 子 (フック担当) を起動し、親の終了時に一緒に終了させる
+Run '"' A_AhkPath '" "' A_ScriptFullPath '" hook', , , &childPid
+OnExit (*) => ProcessClose(childPid)
 
 ; WM_INPUT を受け取るための非表示ウィンドウ
 rawWin := Gui()
