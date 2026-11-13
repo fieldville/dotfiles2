@@ -50,9 +50,18 @@ when present:
 | --- | --- | --- |
 | `~/.profile.private` | `.zprofile` / `.profile` (login shell) | `PATH`, `export`s, tokens |
 | `~/.alias.private` | `.zshrc` / `.bashrc` (interactive shell) | aliases, functions, completions |
+| `~/.rc.private` | `.zshrc` / `.bashrc`, at the very end | overrides that must win, e.g. the front of `PATH` |
 
-Both files are read by bash and zsh alike, so keep them to syntax both accept. The
+All of them are read by bash and zsh alike, so keep them to syntax both accept. The
 PowerShell counterpart is `~\.alias.private.ps1`.
+
+`.zshrc` / `.bashrc` prepend several directories to `PATH` (fnm, cargo, `~/.local/bin`,
+...) after `~/.profile.private` has run, so to put a directory first, do it in
+`~/.rc.private`. For example, Homebrew first:
+
+```sh
+PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+```
 
 Windows (PowerShell):
 ---------------------

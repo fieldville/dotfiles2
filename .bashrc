@@ -63,3 +63,10 @@ fi
 [ -f ~/.cargo/env ] && . ~/.cargo/env
 export PATH="$HOME/.local/share/fnm:$PATH"
 command -v fnm >/dev/null && eval "$(fnm env --use-on-cd --shell bash)"
+
+# Machine-local overrides, kept outside this repo and sourced LAST, after every PATH
+# change above (the extra bin dirs, conda, cargo, fnm). ~/.profile.private runs in the
+# login shell, before this file, so it cannot decide what ends up first in PATH; this
+# file can, e.g. PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH". .zshrc sources the
+# same file, so keep it to syntax both bash and zsh accept.
+[ -f ~/.rc.private ] && . ~/.rc.private
