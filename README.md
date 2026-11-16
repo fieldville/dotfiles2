@@ -63,6 +63,21 @@ PowerShell counterpart is `~\.alias.private.ps1`.
 PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
 ```
 
+macOS settings:
+---------------
+
+`macos.bash` applies the macOS settings that are not dotfiles, through `defaults`. On
+macOS `setup.bash` offers to run it after the links (`-y` runs it without asking); it is
+safe to rerun, and can be run on its own:
+
+```
+$ ./macos.bash
+```
+
+| Setting | Why |
+| --- | --- |
+| Terminal.app: "Split Pane" moved from Cmd-D to Ctrl-Opt-Shift-Cmd-D | Cmd-D splits the window, which is useless under byobu / tmux; restart Terminal to apply |
+
 Windows (PowerShell):
 ---------------------
 

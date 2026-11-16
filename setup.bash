@@ -45,3 +45,14 @@ for f in $(find . -mindepth 1 -maxdepth 1 -name '.*' ! -name '.git' ! -name '.*s
     *)    echo "  skipped $f" ;;
   esac
 done
+
+# macOS: apply the settings that are not dotfiles (see macos.bash).
+if [[ $(uname) == Darwin ]]; then
+  if (( yes_all )); then
+    ./macos.bash
+  else
+    read -rp "macos.bash  [macOS settings via defaults]  run? (y/N) " -n 1
+    echo
+    [[ $REPLY == [Yy] ]] && ./macos.bash
+  fi
+fi
