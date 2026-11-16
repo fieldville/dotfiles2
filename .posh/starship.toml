@@ -17,3 +17,46 @@ disabled = false
 powershell_indicator = "[pwsh](bold blue)"
 bash_indicator = "[bash](bold yellow)"
 zsh_indicator = "[zsh](bold green)"
+
+# No Nerd Font needed. Starship's defaults draw a few symbols from the Nerd Font /
+# Powerline private-use glyphs, which show as a box or "?" in a terminal without such a
+# font, and a locked-down machine may not allow installing one. Every such default is
+# replaced below, so the prompt looks the same on every machine with the stock fonts.
+# Branch symbols are the values of `starship preset plain-text-symbols` (the
+# no-nerd-font preset leaves the Powerline branch glyph in); the rest is
+# `starship preset no-nerd-font` as is. The os module also uses such glyphs but stays
+# disabled (see above). After a Starship upgrade, compare with the output of those two
+# presets to pick up symbols added since.
+[git_branch]
+symbol = "git "
+
+[hg_branch]
+symbol = "hg "
+
+[fossil_branch]
+symbol = "fossil "
+
+[jj_bookmark]
+symbol = "jj "
+
+[pijul_channel]
+symbol = "pijul "
+
+[nodejs]
+symbol = "[⬢](bold green) "
+
+[battery]
+full_symbol = "• "
+charging_symbol = "⇡ "
+discharging_symbol = "⇣ "
+unknown_symbol = "❓ "
+empty_symbol = "❗ "
+
+[azure]
+symbol = "☁️ "
+
+[erlang]
+symbol = "ⓔ "
+
+[pulumi]
+symbol = "🧊 "

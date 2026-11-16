@@ -82,9 +82,8 @@ if (Get-Module -ListAvailable posh-git) {
   Import-Module posh-git
 }
 
-# Starship prompt (https://starship.rs). Install: `winget install Starship.Starship`. The
-# default preset uses Nerd Font glyphs, so also install one and select it in the terminal,
-# e.g. `winget install DEVCOM.JetBrainsMonoNerdFont`.
+# Starship prompt (https://starship.rs). Install: `winget install Starship.Starship`. No
+# Nerd Font is needed: .posh/starship.toml replaces every default symbol that requires one.
 # Config: .posh/starship.toml in this repo (shared with .bashrc), pointed to via
 # $env:STARSHIP_CONFIG so no symlink into $env:USERPROFILE\.config is needed; a value already
 # set elsewhere wins. Skipped silently when starship is missing, so a fresh machine still

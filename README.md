@@ -26,7 +26,8 @@ only lists what is missing.
 
 Starship reads `.posh/starship.toml` through `STARSHIP_CONFIG`, set by `.bashrc`, `.zshrc`
 and the PowerShell profile from their own location, so no `~/.config/starship.toml` link
-is needed.
+is needed. That config replaces every default symbol that needs a Nerd Font, so the
+prompt renders with the stock terminal fonts and no font has to be installed.
 
 zsh (macOS default shell):
 --------------------------
