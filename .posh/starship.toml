@@ -26,7 +26,9 @@ zsh_indicator = "[zsh](bold green)"
 # no-nerd-font preset leaves the Powerline branch glyph in); the rest is
 # `starship preset no-nerd-font` as is. The os module also uses such glyphs but stays
 # disabled (see above). After a Starship upgrade, compare with the output of those two
-# presets to pick up symbols added since.
+# presets to pick up symbols added since. jj_bookmark (in that preset since Starship
+# 1.27.0) is left out on purpose: an older Starship, which a locked-down machine may
+# be stuck on, rejects the section with "Unknown key".
 [git_branch]
 symbol = "git "
 
@@ -35,9 +37,6 @@ symbol = "hg "
 
 [fossil_branch]
 symbol = "fossil "
-
-[jj_bookmark]
-symbol = "jj "
 
 [pijul_channel]
 symbol = "pijul "
