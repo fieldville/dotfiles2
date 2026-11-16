@@ -18,6 +18,12 @@ $ ./setup.bash
 Use `./setup.bash -y` to link everything without asking. To pick up a layout change
 after `git pull`, just run it again; it relinks in place.
 
+After the links it checks the tools in `Brewfile` (Starship, the zsh plugins, fzf,
+zoxide) and offers to install the missing ones with Homebrew (`-y` installs without
+asking). The rc files load each tool only when it is installed, so a missing one gives
+no error, just a shell without it; this check is what tells you. Without Homebrew it
+only lists what is missing.
+
 Starship reads `.posh/starship.toml` through `STARSHIP_CONFIG`, set by `.bashrc`, `.zshrc`
 and the PowerShell profile from their own location, so no `~/.config/starship.toml` link
 is needed.
@@ -32,10 +38,12 @@ zsh-autosuggestions / zsh-syntax-highlighting are optional and picked up from Ho
 or the Ubuntu packages when installed:
 
 ```
-$ brew install starship zsh-autosuggestions zsh-syntax-highlighting fzf zoxide   # macOS
-$ sudo apt install zsh zsh-autosuggestions zsh-syntax-highlighting               # Ubuntu / WSL
-$ ./setup.bash                                                                   # links .zshrc and .zprofile among the rest
+$ sudo apt install zsh zsh-autosuggestions zsh-syntax-highlighting   # Ubuntu / WSL only
+$ ./setup.bash                                                       # links .zshrc and .zprofile, installs Brewfile (macOS)
 ```
+
+No suggestions while typing on a new machine means zsh-autosuggestions is not installed:
+rerun `./setup.bash`, or `brew bundle --file=~/.dotfiles2/Brewfile`.
 
 macOS Terminal and iTerm already start zsh; elsewhere run `chsh -s "$(command -v zsh)"`
 and log in again.
