@@ -97,6 +97,17 @@ function gsts { git stash show --text @args }
 
 # misc
 function gexport { git archive --format zip --output @args }
+function gshapr {
+  # show the merged PR(s) that brought a commit in (needs gh); owner/repo comes from the
+  # remote URL. usage: gshapr <sha> [remote]. The jq filter has no double quotes on purpose:
+  # Windows PowerShell 5.1 strips them from native-command arguments.
+  param([Parameter(Mandatory)][string]$Sha, [string]$Remote = 'origin')
+  $url = git remote get-url $Remote
+  if ($LASTEXITCODE -ne 0) { return }
+  $repo = $url -replace '^(git@[^:]+:|ssh://[^/]+/|https?://[^/]+/)', '' -replace '\.git$', '' -replace '/$', ''
+  gh api "repos/$repo/commits/$Sha/pulls" --jq '.[] | select(.merged_at != null) | [.number, .title, .merged_at, .html_url] | @tsv' |
+    ForEach-Object { $n, $t, $m, $u = $_ -split "`t"; "#$n $t (merged: $m)`n  $u" }
+}
 function grt {
   # cd to the repository root (bash: cd $(git rev-parse --show-cdup))
   $top = git rev-parse --show-toplevel 2>$null
