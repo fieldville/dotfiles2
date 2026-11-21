@@ -15,3 +15,8 @@ for title in 'Split Pane' '分割パネル'; do
   defaults write com.apple.Terminal NSUserKeyEquivalents -dict-add "$title" '@~^$d'
 done
 echo "  Terminal.app: Split Pane moved off Cmd-D (restart Terminal to apply)"
+
+# VS Code: turn off press-and-hold (the accent-character popup) so that holding hjkl in
+# VSCodeVim repeats the key and keeps moving the cursor. Affects VS Code only.
+defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
+echo "  VS Code: press-and-hold off, held keys repeat (quit VS Code with Cmd-Q and restart to apply)"
