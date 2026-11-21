@@ -86,6 +86,7 @@ $ ./macos.bash
 | Setting | Why |
 | --- | --- |
 | Terminal.app: "Split Pane" moved from Cmd-D to Ctrl-Opt-Shift-Cmd-D | Cmd-D splits the window, which is useless under byobu / tmux; restart Terminal to apply |
+| VS Code: press-and-hold (accent-character popup) off | Holding hjkl in VSCodeVim repeats the key instead of opening the popup; quit VS Code with Cmd-Q and restart to apply |
 
 Windows (PowerShell):
 ---------------------
