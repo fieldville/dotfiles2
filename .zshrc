@@ -13,6 +13,9 @@ SAVEHIST=100000
 setopt hist_ignore_dups hist_ignore_all_dups hist_ignore_space
 setopt share_history inc_append_history extended_history
 
+# --- allow "# comment" on the interactive command line, as bash does by default
+setopt interactive_comments
+
 # --- completion. bashcompinit lets bash-style `complete` lines in ~/.alias.private work in zsh.
 # Ubuntu's /etc/zsh/zshrc has already run compinit by the time this file is read;
 # running it a second time only costs startup time, so skip it when compdef exists.
