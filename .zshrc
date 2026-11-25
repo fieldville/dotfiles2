@@ -115,11 +115,15 @@ command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh --cmd j)"
 # zsh-autosuggestions / zsh-syntax-highlighting, from Homebrew (macOS / Linuxbrew,
 # see Brewfile) or the Ubuntu packages (apt install zsh-autosuggestions
 # zsh-syntax-highlighting). Loaded only when present so a fresh machine still starts
-# cleanly. Ctrl-Space accepts the suggestion.
+# cleanly. Ctrl-Space (or Ctrl-E) accepts the whole suggestion, Alt-F one word, and
+# Ctrl-F / Right one character: forward-char is moved from the "accept everything"
+# list to the "accept up to the cursor" list, after the plugin has set its defaults.
 for _d in ${HOMEBREW_PREFIX:+$HOMEBREW_PREFIX/share} /usr/share; do
   if [ -f "$_d/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
     . "$_d/zsh-autosuggestions/zsh-autosuggestions.zsh"
     bindkey '^ ' autosuggest-accept
+    ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(${ZSH_AUTOSUGGEST_ACCEPT_WIDGETS:#forward-char})
+    ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS+=(forward-char)
     break
   fi
 done
