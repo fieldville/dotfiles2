@@ -46,6 +46,14 @@ $ ./setup.bash                                                       # links .zs
 No suggestions while typing on a new machine means zsh-autosuggestions is not installed:
 rerun `./setup.bash`, or `brew bundle --file=~/.dotfiles2/Brewfile`.
 
+Keys that accept the suggestion (emacs keymap):
+
+| Key | Accepts |
+| --- | --- |
+| Ctrl-F / Right | one character |
+| Alt-F | one word |
+| Ctrl-E / Ctrl-Space | the whole suggestion |
+
 macOS Terminal and iTerm already start zsh; elsewhere run `chsh -s "$(command -v zsh)"`
 and log in again.
 
