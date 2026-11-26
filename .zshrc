@@ -11,7 +11,14 @@ HISTFILE=~/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
 setopt hist_ignore_dups hist_ignore_all_dups hist_ignore_space
-setopt share_history inc_append_history extended_history
+# share_history writes each command to $HISTFILE as it is run and reads in what other
+# shells wrote. (inc_append_history is not set with it: the manual says to use one or
+# the other.) zsh does that reading only when it draws a new prompt, so a shell that
+# sits at its prompt, e.g. the other tmux pane, would not see a command typed
+# elsewhere until Enter is pressed there. _history_import reads the new lines right
+# away; the history search keys below (Up / Ctrl-p, Ctrl-r) call it first.
+setopt share_history extended_history
+_history_import() { fc -RI 2>/dev/null }
 
 # --- allow "# comment" on the interactive command line, as bash does by default
 setopt interactive_comments
@@ -50,6 +57,7 @@ _history_prefix_search() {
   # until then the prefix typed at the start of the search is kept.
   if [[ $BUFFER != $_hps_buffer || $HISTNO != $_hps_histno ]]; then
     _hps_prefix=$LBUFFER
+    _history_import     # pick up what other shells (panes) have run since this prompt
     _hps_start=$HISTNO
     _hps_path=()        # history numbers shown so far, newest first
     _hps_shown=()       # their texts, so a duplicated entry is skipped
@@ -108,6 +116,13 @@ export PATH=~/.local/bin:$PATH
 [ -f ~/.galias ] && . ~/.galias
 [ -f ~/.alias.private ] && . ~/.alias.private
 command -v fzf >/dev/null 2>&1 && eval "$(fzf --zsh)"
+# Ctrl-r (fzf's history search) lists the in-memory history, so read in the other
+# shells' commands first, as Up / Ctrl-p do.
+if (( $+widgets[fzf-history-widget] )); then
+  _fzf_history_shared() { _history_import; zle fzf-history-widget }
+  zle -N _fzf_history_shared
+  bindkey "^R" _fzf_history_shared
+fi
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh --cmd j)"
 [ -f ~/.falias ] && source ~/.falias
 [ -f ~/.fieldville/nvim/docker/alias.sh ] && . ~/.fieldville/nvim/docker/alias.sh
